@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Tablero Kanban')}"></head>
+<body>
+
+<div class="panel-shell">
+    <aside th:replace="~{fragments/panel-sidebar :: sidebar('kanban')}"></aside>
+
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Gestión de actividades</span>
+                <h2 style="margin:0;">Tablero Kanban</h2>
+            </div>
+            <span class="text-muted" style="font-size:0.85rem;">Arrastra una tarjeta a otra columna para cambiar su estado.</span>
+        </div>
+
+        <div class="kanban-board">
+            <div class="kanban-column" th:each="e : ${estados}" th:attr="data-estado=${e}">
+                <div class="kanban-column-head">
+                    <span th:text="${e.etiqueta}">Estado</span>
+                    <span class="kanban-count" th:text="${#lists.size(solicitudes.?[estado == e])}">0</span>
+                </div>
+                <div class="kanban-card" draggable="true"
+                     th:each="s : ${solicitudes}" th:if="${s.estado == e}"
+                     th:attr="data-id=${s.id}">
+                    <div class="nombre" th:text="${s.nombreCompleto}">Nombre</div>
+                    <div class="meta" th:text="'#CP-' + ${#numbers.formatInteger(s.id, 5)} + ' · S/ ' + ${#numbers.formatDecimal(s.montoSolicitado,1,'COMMA',0,'POINT')}">#CP-00001</div>
+                    <div class="meta" style="margin-top:6px;">
+                        <span class="chip" th:classappend="${s.resultado != null and s.resultado.name() == 'PRECALIFICADO'} ? 'ok' : 'review'"
+                              th:text="${s.resultado != null ? s.resultado.etiqueta : '—'}">Pre-calificado</span>
+                    </div>
+                    <a th:href="@{'/asesor/' + ${s.id}}" class="meta" style="display:inline-block; margin-top:6px;">Ver detalle →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script th:src="@{/js/kanban.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Cita confirmada')}"></head>
+<body>
+
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<section class="section-tight">
+    <div class="container-narrow">
+        <div class="result-hero">
+            <div class="result-badge ok">🗓️</div>
+            <h2>¡Tu cita está confirmada!</h2>
+            <p class="text-muted">Te esperamos en la agencia elegida. Lleva tu DNI y los documentos de sustento de ingresos.</p>
+        </div>
+
+        <div class="result-card">
+            <h3 style="font-size:1.05rem;">Detalle de la cita</h3>
+            <div style="display:grid; gap:14px; margin-top:20px; font-size:0.94rem;">
+                <div class="flex items-center justify-between">
+                    <span class="text-muted">Solicitante</span>
+                    <strong th:text="${solicitud.nombreCompleto}">Nombre</strong>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-muted">Fecha</span>
+                    <strong th:text="${#temporals.format(solicitud.citaFecha, 'dd/MM/yyyy')}">01/01/2026</strong>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-muted">Hora</span>
+                    <strong th:text="${solicitud.citaHora}">09:00</strong>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-muted">Agencia</span>
+                    <strong th:text="${solicitud.citaAgencia}">Piura — Sede Central</strong>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-muted">Código de solicitud</span>
+                    <strong th:text="'#CP-' + ${#numbers.formatInteger(solicitud.id, 5)}">#CP-00001</strong>
+                </div>
+            </div>
+
+            <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
+                <a th:href="@{'/resultado/' + ${solicitud.id} + '/comprobante.pdf'}" target="_blank" class="btn btn-outline btn-block">📄 Descargar comprobante PDF</a>
+                <a href="/" class="btn btn-primary btn-block">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

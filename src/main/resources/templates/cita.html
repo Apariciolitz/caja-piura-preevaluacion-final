@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Agendar cita')}"></head>
+<body>
+
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<section class="section-tight">
+    <div class="container-narrow">
+        <div class="section-head center" style="margin-left:auto;margin-right:auto;">
+            <span class="section-kicker">Paso 2 de 2</span>
+            <h2>Agenda tu cita en agencia</h2>
+            <p>Elige la fecha, hora y agencia de tu preferencia. Tu asesor ya tendrá tu pre-evaluación lista.</p>
+        </div>
+
+        <form class="form-card" th:action="@{'/cita/' + ${solicitud.id}}" method="post">
+            <div class="form-grid">
+                <div class="field">
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha" name="fecha" required th:attr="min=${fechaMinima}" />
+                </div>
+                <div class="field">
+                    <label for="hora">Hora</label>
+                    <select id="hora" name="hora" required>
+                        <option value="09:00">09:00 a.m.</option>
+                        <option value="10:30">10:30 a.m.</option>
+                        <option value="12:00">12:00 p.m.</option>
+                        <option value="15:00">03:00 p.m.</option>
+                        <option value="16:30">04:30 p.m.</option>
+                    </select>
+                </div>
+                <div class="field full">
+                    <label for="agencia">Agencia</label>
+                    <select id="agencia" name="agencia" required>
+                        <option value="Piura - Sede Central">Piura — Sede Central</option>
+                        <option value="Piura - Open Plaza">Piura — Open Plaza</option>
+                        <option value="Sullana">Sullana</option>
+                        <option value="Talara">Talara</option>
+                        <option value="Chulucanas">Chulucanas</option>
+                        <option value="Atención remota">Atención remota (videollamada)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="background:var(--cream); border-radius:var(--radius-sm); padding:16px 18px; margin-bottom:20px; font-size:0.88rem;">
+                <strong th:text="${solicitud.nombreCompleto}">Nombre</strong>
+                <span class="text-muted"> · Solicitud </span>
+                <strong th:text="'#CP-' + ${#numbers.formatInteger(solicitud.id, 5)}">#CP-00001</strong>
+                <span class="text-muted"> · </span>
+                <span th:text="${solicitud.resultado.etiqueta}">Pre-calificado</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Confirmar cita</button>
+        </form>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

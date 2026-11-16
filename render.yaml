@@ -1,0 +1,38 @@
+# Blueprint de despliegue para Render (https://render.com)
+#
+# Uso:
+#   1. Sube este repositorio a GitHub.
+#   2. En Render: New + > Blueprint > selecciona el repositorio.
+#      Render detecta este archivo y crea el servicio automáticamente.
+#   3. Plan "Free" alcanza para la demo académica.
+#
+# El disco es efímero en el plan Free: los datos de H2 se reinician
+# en cada despliegue nuevo. Para persistencia real, añadir un disco
+# ("disks:") o migrar a Postgres administrado (Render lo ofrece gratis
+# también, ver comentario al final del archivo).
+
+services:
+  - type: web
+    name: caja-piura-preevaluacion
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASESOR_USER
+        value: asesor
+      - key: ASESOR_PASSWORD
+        generateValue: true
+      - key: PORT
+        value: 8080
+    healthCheckPath: /
+
+# ---------------------------------------------------------------
+# Alternativa con base de datos administrada (opcional, mas robusto):
+#
+# databases:
+#   - name: caja-piura-db
+#     plan: free
+#
+# Y en el servicio web agregar las variables SPRING_DATASOURCE_URL,
+# SPRING_DATASOURCE_USERNAME y SPRING_DATASOURCE_PASSWORD apuntando
+# a esa base de datos, cambiando el driver a Postgres en el pom.xml.

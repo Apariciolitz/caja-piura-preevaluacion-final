@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Resultado de tu pre-evaluación')}"></head>
+<body>
+
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<section class="section-tight">
+    <div class="container-narrow">
+
+        <div class="result-hero">
+            <div class="result-badge" th:classappend="${solicitud.resultado.name() == 'PRECALIFICADO'} ? 'ok' : 'review'">
+                <span th:if="${solicitud.resultado.name() == 'PRECALIFICADO'}">✓</span>
+                <span th:unless="${solicitud.resultado.name() == 'PRECALIFICADO'}">⏳</span>
+            </div>
+            <span class="badge-status" th:classappend="${solicitud.resultado.name() == 'PRECALIFICADO'} ? 'ok' : 'review'"
+                  th:text="${solicitud.resultado.etiqueta}">Pre-calificado</span>
+            <h2 style="margin-top:16px;" th:text="${solicitud.resultado.subtitulo}">Buen punto de partida</h2>
+            <p class="text-muted" th:if="${solicitud.resultado.name() == 'PRECALIFICADO'}">
+                Con estos datos, el siguiente paso es agendar tu cita en agencia para la evaluación formal con un asesor de negocios.
+            </p>
+            <p class="text-muted" th:unless="${solicitud.resultado.name() == 'PRECALIFICADO'}">
+                Tu solicitud requiere una revisión más detallada. Un asesor de negocios se pondrá en contacto contigo para conversar sobre alternativas.
+            </p>
+        </div>
+
+        <div class="result-card">
+            <h3 style="font-size:1.05rem;">Resumen de tu solicitud</h3>
+            <div class="result-metric-row">
+                <div class="result-metric">
+                    <span class="num" th:text="'S/ ' + ${#numbers.formatDecimal(solicitud.ingresoMensual, 1, 'COMMA', 0, 'POINT')}">S/ 1,800</span>
+                    <span class="label">Ingreso mensual</span>
+                </div>
+                <div class="result-metric">
+                    <span class="num" th:text="'S/ ' + ${#numbers.formatDecimal(solicitud.montoSolicitado, 1, 'COMMA', 0, 'POINT')}">S/ 5,600</span>
+                    <span class="label">Monto solicitado</span>
+                </div>
+                <div class="result-metric">
+                    <span class="num" th:text="${solicitud.ratio}">3.11</span>
+                    <span class="label">Ratio monto / ingreso</span>
+                </div>
+            </div>
+
+            <div style="border-top:1px solid var(--border); padding-top:20px; margin-top:8px; display:grid; gap:10px; font-size:0.92rem;">
+                <div class="flex items-center justify-between">
+                    <span class="text-muted">Solicitante</span>
+                    <strong th:text="${solicitud.nombreCompleto}">Nombre</strong>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-muted">Destino del crédito</span>
+                    <strong th:text="${solicitud.destinoCredito}">Capital de trabajo</strong>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-muted">Código de solicitud</span>
+                    <strong th:text="'#CP-' + ${#numbers.formatInteger(solicitud.id, 5)}">#CP-00001</strong>
+                </div>
+                <div class="flex items-center justify-between" th:if="${solicitud.asesorAsignado != null}">
+                    <span class="text-muted">Asesor asignado</span>
+                    <strong th:text="${solicitud.asesorAsignado.nombreCompleto}">Asesor</strong>
+                </div>
+            </div>
+
+            <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
+                <a th:if="${solicitud.resultado.name() == 'PRECALIFICADO'}"
+                   th:href="@{'/cita/' + ${solicitud.id}}" class="btn btn-primary btn-block">Agendar mi cita en agencia</a>
+                <a th:unless="${solicitud.resultado.name() == 'PRECALIFICADO'}"
+                   th:href="@{'/cita/' + ${solicitud.id}}" class="btn btn-primary btn-block">Agendar una llamada con un asesor</a>
+                <a th:href="@{'/resultado/' + ${solicitud.id} + '/comprobante.pdf'}" target="_blank" class="btn btn-outline btn-block">📄 Descargar comprobante PDF</a>
+                <a href="/" class="btn btn-outline btn-block">Volver al inicio</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<aside th:fragment="sidebar(activo)" class="panel-sidebar">
+    <a href="/" class="brand">
+        <span class="brand-mark">CP</span>
+        Caja Piura
+    </a>
+    <nav class="panel-nav">
+        <a href="/asesor" th:classappend="${activo == 'solicitudes'} ? 'active'">📋 Solicitudes</a>
+        <a href="/asesor/kanban" th:classappend="${activo == 'kanban'} ? 'active'">🗂️ Tablero Kanban</a>
+        <a href="/asesor/analitica" th:classappend="${activo == 'analitica'} ? 'active'">📊 Analítica</a>
+        <a href="/">🌐 Ver sitio público</a>
+        <form th:action="@{/asesor/logout}" method="post" style="margin-top:24px;">
+            <button type="submit" class="btn btn-outline-light btn-block" style="font-size:0.85rem;">Cerrar sesión</button>
+        </form>
+    </nav>
+</aside>

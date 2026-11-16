@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Portal del asesor')}"></head>
+<body>
+
+<section class="section" style="min-height:100vh; display:flex; align-items:center;">
+    <div class="container-narrow" style="max-width:420px;">
+        <div class="text-center" style="margin-bottom:28px;">
+            <a href="/" class="brand" style="justify-content:center;">
+                <span class="brand-mark">CP</span>
+                Caja Piura
+            </a>
+        </div>
+
+        <div class="form-card">
+            <h2 style="text-align:center; font-size:1.4rem;">Portal del asesor</h2>
+            <p class="text-muted text-center" style="margin-bottom:24px;">Acceso exclusivo para el equipo de asesores de negocio.</p>
+
+            <div th:if="${error}" class="error-msg" style="background:var(--red-light); padding:12px 16px; border-radius:10px; margin-bottom:18px;">
+                Usuario o contraseña incorrectos.
+            </div>
+
+            <form th:action="@{/asesor/login}" method="post">
+                <div class="field">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" placeholder="rpena" required />
+                </div>
+                <div class="field">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+            </form>
+            <div class="hint text-center" style="margin-top:16px; line-height:1.7;">
+                Cuentas de demostración (equipo de asesores):<br>
+                <strong>rpena</strong> / asesor123 · <strong>jtimana</strong> / asesor123<br>
+                <strong>admin</strong> / cajapiura2026 (administrador)
+            </div>
+        </div>
+
+        <p class="text-center" style="margin-top:20px;">
+            <a href="/" class="text-muted" style="font-size:0.88rem;">← Volver al sitio público</a>
+        </p>
+    </div>
+</section>
+
+</body>
+</html>

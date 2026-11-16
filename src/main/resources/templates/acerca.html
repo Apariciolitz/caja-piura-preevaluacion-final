@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Acerca del proyecto')}"></head>
+<body>
+
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<section class="section-tight">
+    <div class="container-narrow">
+        <div class="section-head center" style="margin-left:auto;margin-right:auto;">
+            <span class="section-kicker">Proyecto académico</span>
+            <h2>Acerca de esta plataforma</h2>
+            <p>Pre-evaluación digital de créditos: propuesta de innovación para Caja Piura. Curso de Herramientas de Desarrollo.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section-tight">
+    <div class="container-narrow">
+
+        <div class="chart-card" style="margin-bottom:20px;">
+            <h3>Proceso principal</h3>
+            <p class="text-muted">
+                El cliente completa el formulario de pre-evaluación con su ingreso mensual, el monto solicitado y
+                el destino del crédito, y puede adjuntar su DNI y su sustento de ingresos. El sistema calcula el
+                ratio <em>monto solicitado / ingreso mensual</em>: si es menor o igual a 4, la solicitud queda
+                <strong>pre-calificada</strong>; si es mayor, <strong>requiere revisión</strong>. En ambos casos el
+                resultado converge en la evaluación formal de un asesor de negocios, nunca reemplazado por el sistema.
+            </p>
+        </div>
+
+        <div class="chart-card" style="margin-bottom:20px;">
+            <h3>Secuencia del proceso</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="titulo">1. Pre-evaluación</div>
+                    <div class="detalle">El cliente llena el formulario público y el sistema calcula el resultado preliminar al instante.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="titulo">2. Asignación automática</div>
+                    <div class="detalle">La solicitud se reparte entre los asesores activos, equilibrando la carga de trabajo del equipo.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="titulo">3. Agendamiento o contacto</div>
+                    <div class="detalle">Si calificó, el cliente agenda su cita; si no, el asesor lo contacta con alternativas.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="titulo">4. Seguimiento colaborativo</div>
+                    <div class="detalle">El equipo de asesores da seguimiento desde el tablero Kanban, deja comentarios internos y el sistema registra cada cambio de estado.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="titulo">5. Evaluación formal</div>
+                    <div class="detalle">Un asesor de negocios realiza la evaluación final del crédito y cierra el expediente.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-card" style="margin-bottom:20px;">
+            <h3>Herramientas de colaboración de equipo</h3>
+            <p class="text-muted">
+                Varios asesores pueden trabajar en paralelo con sus propias cuentas. Cada solicitud se asigna
+                automáticamente al asesor con menos carga activa, y el equipo puede dejar comentarios internos con
+                autor y fecha sobre cada caso, visibles para todos en el panel.
+            </p>
+        </div>
+
+        <div class="chart-card" style="margin-bottom:20px;">
+            <h3>Herramientas de gestión de actividades</h3>
+            <p class="text-muted">
+                El panel incluye un tablero Kanban (arrastrar y soltar) con las columnas Pendiente, Cita agendada,
+                En revisión, Contactado y Cerrado, además de un dashboard de analítica con la tendencia de
+                solicitudes, la distribución por destino de crédito y la tasa de pre-calificación.
+            </p>
+        </div>
+
+        <div class="chart-card">
+            <h3>Stack técnico</h3>
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px; font-size:0.9rem;">
+                <div><strong>Backend:</strong> Spring Boot 3 (Java 21), Spring MVC, Spring Data JPA, Spring Security</div>
+                <div><strong>Vistas:</strong> Thymeleaf + CSS propio</div>
+                <div><strong>Base de datos:</strong> H2 (archivo local)</div>
+                <div><strong>Reportes:</strong> generación de PDF con OpenPDF</div>
+                <div><strong>Gráficos:</strong> Chart.js</div>
+                <div><strong>Control de versiones:</strong> Git / GitHub, con ramas main, develop y feature/*</div>
+                <div><strong>CI:</strong> GitHub Actions (build y pruebas automáticas)</div>
+                <div><strong>Despliegue:</strong> Docker + Render</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Pre-evaluación digital de créditos')}"></head>
+<body>
+
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+    <div class="hero-orb o1"></div>
+    <div class="hero-orb o2"></div>
+    <div class="container hero-inner">
+        <div>
+            <span class="hero-badge">● Pre-evaluación crediticia digital</span>
+            <h1>Tu crédito, aprobado<br/>más rápido que nunca</h1>
+            <p class="lead">Evalúa tu crédito sin salir de casa. Completa tus datos en línea y recibe una pre-evaluación en minutos. Si calificas, agenda tu cita ya con todo listo: sin colas ni viajes de más.</p>
+            <div class="hero-actions">
+                <a href="/pre-evaluacion" class="btn btn-primary">Empezar pre-evaluación</a>
+                <a href="#como-funciona" class="btn btn-outline-light">Ver cómo funciona</a>
+            </div>
+            <div class="hero-trust">
+                <div class="trust-item"><span class="dot"></span>Confidencial: privado y juzgamiento libre</div>
+                <div class="trust-item"><span class="dot"></span>Personalizado según tu perfil</div>
+                <div class="trust-item"><span class="dot"></span>Flexible: define tú el proceso</div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="mini-form-title">Prueba la pre-evaluación</div>
+            <div class="mini-form-sub">Estos valores son ilustrativos del funcionamiento del proyecto.</div>
+            <div class="mini-field">
+                <label>Ingreso mensual (S/)</label>
+                <div class="fake-input">1,800</div>
+            </div>
+            <div class="mini-field">
+                <label>Monto solicitado (S/)</label>
+                <div class="fake-input">5,600</div>
+            </div>
+            <div class="mini-field">
+                <label>Destino del crédito</label>
+                <div class="fake-input">Capital de trabajo</div>
+            </div>
+            <div class="mini-result">
+                <span class="tag">Resultado preliminar</span>
+                <strong>Pre-calificado</strong>
+                <span>Con estos datos, el siguiente paso es agendar tu cita con un asesor.</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="stats-bar">
+        <div class="stat-cell"><span class="num">44 años</span><span class="label">formando parte del sistema financiero peruano</span></div>
+        <div class="stat-cell"><span class="num">140+</span><span class="label">agencias en el norte del país</span></div>
+        <div class="stat-cell"><span class="num">56%</span><span class="label">de operaciones ya realizadas por canales digitales</span></div>
+        <div class="stat-cell"><span class="num">1,500+</span><span class="label">agentes corresponsales para depósitos y pagos</span></div>
+    </div>
+</div>
+
+<!-- ===================== COMO FUNCIONA ===================== -->
+<section class="section" id="como-funciona">
+    <div class="container">
+        <div class="section-head center" style="margin-left:auto;margin-right:auto;">
+            <span class="section-kicker">Cómo funciona</span>
+            <h2>De la agencia física a un formulario en línea</h2>
+            <p>Un flujo simple, pensado para que el cliente sepa en minutos si su solicitud es viable, y para que el asesor de negocios reciba casos ya adelantados.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h4>Completa el formulario</h4>
+                <p>Ingreso mensual, monto solicitado y destino del crédito.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h4>Sube tus documentos</h4>
+                <p>DNI y sustento de ingresos, directamente desde tu dispositivo.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h4>Resultado instantáneo</h4>
+                <p>El sistema calcula tu pre-calificación en segundos.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <h4>Agenda tu cita</h4>
+                <p>Si calificas, reservas cita en agencia con el proceso adelantado.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== COMPARACION ===================== -->
+<section class="section-tight" id="comparacion">
+    <div class="container">
+        <div class="section-head">
+            <span class="section-kicker">Antes vs. ahora</span>
+            <h2>Menos fricción para el cliente y para la Caja</h2>
+        </div>
+
+        <div class="compare-grid">
+            <div class="compare-card old">
+                <h3>😓 Proceso actual</h3>
+                <ul class="compare-list">
+                    <li><span class="icon-x">✕</span> El cliente debe trasladarse solo para saber si califica</li>
+                    <li><span class="icon-x">✕</span> Documentos en papel y espera de varios días</li>
+                    <li><span class="icon-x">✕</span> El alcance se reduce en zonas rurales</li>
+                    <li><span class="icon-x">✕</span> Asesores saturados con consultas que no califican</li>
+                </ul>
+            </div>
+            <div class="compare-card new">
+                <h3>✨ Con pre-evaluación digital</h3>
+                <ul class="compare-list">
+                    <li><span class="icon-check">✓</span> Pre-calificación en minutos, desde cualquier lugar</li>
+                    <li><span class="icon-check">✓</span> Documentos digitales, sin papeleo</li>
+                    <li><span class="icon-check">✓</span> Mismo acceso para zonas urbanas y rurales</li>
+                    <li><span class="icon-check">✓</span> Asesores reciben solo casos ya filtrados y repartidos en equipo</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== CALCULADORA CTA ===================== -->
+<section class="section-tight">
+    <div class="container">
+        <div class="calc-panel">
+            <div class="calc-left">
+                <span class="section-kicker">Pre-evaluación</span>
+                <h3>¿Calificas para tu próximo crédito?</h3>
+                <p class="text-muted">Ingresa tu ingreso mensual y el monto que necesitas. Calculamos al instante la relación cuota/ingreso y te decimos si estás en condiciones de continuar con la evaluación formal.</p>
+                <a href="/pre-evaluacion" class="btn btn-primary">Hacer mi pre-evaluación ahora</a>
+            </div>
+            <div class="calc-right">
+                <h3>¿Aún no decides el monto?</h3>
+                <p>Usa nuestro simulador de cuotas: elige un monto, un plazo y mira la tabla de amortización completa antes de solicitar tu crédito.</p>
+                <a href="/simulador" class="btn btn-outline-light" style="align-self:flex-start;">Abrir simulador de crédito</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SOBRE CAJA PIURA (estilo referencia) ===================== -->
+<section class="section" id="nosotros">
+    <div class="container">
+        <div class="about-band">
+            <span class="pill-label">📌 Sobre Caja Piura</span>
+            <h2>Ayudando a las familias del norte del país a crecer con confianza</h2>
+            <p class="lead">Creemos que el buen servicio financiero empieza por escuchar. Nuestro objetivo es ayudar a nuestros clientes a alcanzar sus metas, sin importar la distancia a la agencia más cercana.</p>
+            <a href="/pre-evaluacion" class="btn btn-dark">Empezar mi pre-evaluación</a>
+
+            <div class="about-stats">
+                <div><span class="num">44+</span><span class="label">Años de experiencia</span></div>
+                <div><span class="num">140+</span><span class="label">Agencias en el norte</span></div>
+                <div><span class="num">56%</span><span class="label">Operaciones digitales</span></div>
+                <div><span class="num">1:1</span><span class="label">Atención personalizada</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

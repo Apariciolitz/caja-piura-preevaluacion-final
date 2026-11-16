@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Analítica')}"></head>
+<body>
+
+<div class="panel-shell">
+    <aside th:replace="~{fragments/panel-sidebar :: sidebar('analitica')}"></aside>
+
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Gestión de actividades</span>
+                <h2 style="margin:0;">Dashboard de analítica</h2>
+            </div>
+        </div>
+
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <span class="num" th:text="${#numbers.formatDecimal(tasaPrecalificacion, 1, 2)} + '%'">0%</span>
+                <span class="label">Tasa de pre-calificación</span>
+            </div>
+            <div class="kpi-card">
+                <span class="num" th:text="'S/ ' + ${#numbers.formatDecimal(montoPromedio, 1, 0)}">S/ 0</span>
+                <span class="label">Monto promedio solicitado</span>
+            </div>
+        </div>
+
+        <div class="analytics-grid">
+            <div class="chart-card">
+                <h3>Tendencia de solicitudes (últimos 14 días)</h3>
+                <canvas id="chartTendencia" height="220"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Resultado de evaluación</h3>
+                <canvas id="chartResultado" height="220"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Distribución por destino de crédito</h3>
+                <canvas id="chartDestino" height="220"></canvas>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var metricas = JSON.parse(/*[[${metricasJson}]]*/ '{}');
+    /*]]>*/
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script th:src="@{/js/analitica.js}"></script>
+
+</body>
+</html>

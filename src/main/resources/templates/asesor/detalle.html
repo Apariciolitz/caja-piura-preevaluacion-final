@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Detalle de solicitud')}"></head>
+<body>
+
+<div class="panel-shell">
+    <aside th:replace="~{fragments/panel-sidebar :: sidebar('solicitudes')}"></aside>
+
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <a href="/asesor" class="text-muted" style="font-size:0.85rem;">← Volver al listado</a>
+                <h2 style="margin:6px 0 0;" th:text="'Solicitud #CP-' + ${#numbers.formatInteger(solicitud.id, 5)}">Solicitud #CP-00001</h2>
+            </div>
+            <span class="chip" th:classappend="${solicitud.resultado != null and solicitud.resultado.name() == 'PRECALIFICADO'} ? 'ok' : 'review'"
+                  th:text="${solicitud.resultado != null ? solicitud.resultado.etiqueta : 'Sin evaluar'}">Pre-calificado</span>
+        </div>
+
+        <div class="analytics-grid-2" style="margin-bottom:24px;">
+
+            <div class="chart-card">
+                <h3>Datos del solicitante</h3>
+                <table class="data-table" style="margin-top:4px;">
+                    <tbody>
+                    <tr><td class="text-muted">Nombre</td><td th:text="${solicitud.nombreCompleto}">Nombre</td></tr>
+                    <tr><td class="text-muted">DNI</td><td th:text="${solicitud.dni}">DNI</td></tr>
+                    <tr><td class="text-muted">Teléfono</td><td th:text="${solicitud.telefono}">Teléfono</td></tr>
+                    <tr><td class="text-muted">Ingreso mensual</td><td th:text="'S/ ' + ${#numbers.formatDecimal(solicitud.ingresoMensual,1,'COMMA',2,'POINT')}">S/ 0.00</td></tr>
+                    <tr><td class="text-muted">Monto solicitado</td><td th:text="'S/ ' + ${#numbers.formatDecimal(solicitud.montoSolicitado,1,'COMMA',2,'POINT')}">S/ 0.00</td></tr>
+                    <tr><td class="text-muted">Destino del crédito</td><td th:text="${solicitud.destinoCredito}">Destino</td></tr>
+                    <tr><td class="text-muted">Fecha de registro</td><td th:text="${#temporals.format(solicitud.fechaCreacion, 'dd/MM/yyyy HH:mm')}">01/01/2026</td></tr>
+                    </tbody>
+                </table>
+                <a th:href="@{'/resultado/' + ${solicitud.id} + '/comprobante.pdf'}" class="btn btn-outline btn-sm" style="margin-top:14px;" target="_blank">📄 Descargar comprobante PDF</a>
+            </div>
+
+            <div class="chart-card">
+                <h3>Gestión del caso</h3>
+
+                <form th:action="@{'/asesor/' + ${solicitud.id} + '/estado'}" method="post" style="margin-bottom:18px;">
+                    <div class="field">
+                        <label for="estado">Cambiar estado</label>
+                        <select id="estado" name="estado">
+                            <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}" th:selected="${e == solicitud.estado}"></option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="notas">Nota (opcional)</label>
+                        <input type="text" id="notas" name="notas" placeholder="Ej. Cliente confirmó documentos..." />
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-sm">Actualizar estado</button>
+                </form>
+
+                <form th:action="@{'/asesor/' + ${solicitud.id} + '/reasignar'}" method="post">
+                    <div class="field">
+                        <label for="asesorId">Reasignar a asesor</label>
+                        <select id="asesorId" name="asesorId">
+                            <option th:each="a : ${asesores}" th:value="${a.id}" th:text="${a.nombreCompleto}"
+                                    th:selected="${solicitud.asesorAsignado != null and solicitud.asesorAsignado.id == a.id}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-outline btn-sm">Reasignar</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="analytics-grid-2">
+
+            <div class="chart-card">
+                <h3>Documentos adjuntos</h3>
+                <ul class="doc-list">
+                    <li class="doc-item" th:each="d : ${documentos}">
+                        <div>
+                            <div class="doc-name" th:text="${d.tipoDocumento}">Tipo</div>
+                            <div class="doc-meta" th:text="${d.nombreOriginal} + ' · ' + ${d.tamanioLegible}">archivo.pdf · 1.2 MB</div>
+                        </div>
+                        <a th:href="@{'/asesor/documentos/' + ${d.id} + '/descargar'}" class="btn btn-outline" style="padding:6px 14px; font-size:0.78rem;">Descargar</a>
+                    </li>
+                    <li th:if="${#lists.isEmpty(documentos)}" class="text-muted" style="padding:10px 0;">El cliente no adjuntó documentos.</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <h3>Línea de tiempo</h3>
+                <div class="timeline">
+                    <div class="timeline-item" th:each="h : ${historial}">
+                        <div class="timeline-dot"></div>
+                        <div class="fecha" th:text="${#temporals.format(h.fecha, 'dd/MM/yyyy HH:mm')}">01/01/2026</div>
+                        <div class="titulo" th:text="${h.estadoNuevo.etiqueta}">Estado</div>
+                        <div class="detalle">
+                            <span th:if="${h.usuario != null}" th:text="${h.usuario.nombreCompleto}">Asesor</span>
+                            <span th:if="${h.detalle != null and !h.detalle.isEmpty()}" th:text="' — ' + ${h.detalle}">— Detalle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="chart-card" id="comentarios" style="margin-top:20px;">
+            <h3>Comentarios internos del equipo</h3>
+            <ul class="comment-list">
+                <li class="comment-item" th:each="c : ${comentarios}">
+                    <span class="autor" th:text="${c.autor.nombreCompleto}">Asesor</span>
+                    <span class="fecha" th:text="${#temporals.format(c.fecha, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
+                    <div class="texto" th:text="${c.texto}">Comentario</div>
+                </li>
+                <li th:if="${#lists.isEmpty(comentarios)}" class="text-muted" style="padding:10px 0;">Aún no hay comentarios en este caso.</li>
+            </ul>
+
+            <form th:action="@{'/asesor/' + ${solicitud.id} + '/comentarios'}" method="post" style="margin-top:14px;">
+                <div class="field">
+                    <label for="texto">Agregar comentario</label>
+                    <textarea id="texto" name="texto" rows="3" maxlength="1000" placeholder="Escribe una nota visible para todo el equipo..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark btn-sm">Comentar</button>
+            </form>
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>

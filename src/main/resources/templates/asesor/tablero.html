@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Panel del asesor')}"></head>
+<body>
+
+<div class="panel-shell">
+    <aside th:replace="~{fragments/panel-sidebar :: sidebar('solicitudes')}"></aside>
+
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Panel del asesor</span>
+                <h2 style="margin:0;">Solicitudes de pre-evaluación</h2>
+            </div>
+            <span class="text-muted" th:if="${usuarioActual != null}" th:text="'Sesión: ' + ${usuarioActual.nombreCompleto}">Sesión</span>
+        </div>
+
+        <div class="kpi-row">
+            <div class="kpi-card"><span class="num" th:text="${totalSolicitudes}">0</span><span class="label">Solicitudes totales</span></div>
+            <div class="kpi-card"><span class="num" th:text="${totalPrecalificados}">0</span><span class="label">Pre-calificados</span></div>
+            <div class="kpi-card"><span class="num" th:text="${totalRevision}">0</span><span class="label">Requieren revisión</span></div>
+            <div class="kpi-card"><span class="num" th:text="${#lists.size(asesores)}">0</span><span class="label">Asesores activos</span></div>
+        </div>
+
+        <form class="filter-bar" method="get" th:action="@{/asesor}">
+            <div class="field">
+                <label for="q">Buscar por nombre o DNI</label>
+                <input type="text" id="q" name="q" th:value="${filtroQ}" placeholder="Ej. Chunga, 45678912..." />
+            </div>
+            <div class="field">
+                <label for="estado">Estado</label>
+                <select id="estado" name="estado">
+                    <option value="">Todos</option>
+                    <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}" th:selected="${e == filtroEstado}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="resultado">Resultado</label>
+                <select id="resultado" name="resultado">
+                    <option value="">Todos</option>
+                    <option th:each="r : ${resultados}" th:value="${r}" th:text="${r.etiqueta}" th:selected="${r == filtroResultado}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="asesorId">Asesor</label>
+                <select id="asesorId" name="asesorId">
+                    <option value="">Todos</option>
+                    <option th:each="a : ${asesores}" th:value="${a.id}" th:text="${a.nombreCompleto}" th:selected="${filtroAsesorId != null and filtroAsesorId == a.id}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
+            <a href="/asesor" class="btn btn-outline btn-sm">Limpiar</a>
+        </form>
+
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Código</th>
+                <th>Solicitante</th>
+                <th>Monto / Ingreso</th>
+                <th>Resultado</th>
+                <th>Estado</th>
+                <th>Asesor</th>
+                <th>Fecha</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="s : ${solicitudes}">
+                <td th:text="'#CP-' + ${#numbers.formatInteger(s.id, 5)}">#CP-00001</td>
+                <td>
+                    <div th:text="${s.nombreCompleto}">Nombre</div>
+                    <div class="text-muted" style="font-size:0.78rem;" th:text="${s.dni}">DNI</div>
+                </td>
+                <td th:text="'S/ ' + ${#numbers.formatDecimal(s.montoSolicitado,1,'COMMA',0,'POINT')} + ' / S/ ' + ${#numbers.formatDecimal(s.ingresoMensual,1,'COMMA',0,'POINT')}">S/ 5,600 / S/ 1,800</td>
+                <td>
+                    <span class="chip" th:classappend="${s.resultado != null and s.resultado.name() == 'PRECALIFICADO'} ? 'ok' : 'review'"
+                          th:text="${s.resultado != null ? s.resultado.etiqueta : '—'}">Pre-calificado</span>
+                </td>
+                <td><span class="chip neutral" th:text="${s.estado.etiqueta}">Pendiente</span></td>
+                <td>
+                    <span th:if="${s.asesorAsignado != null}" class="chip info" th:text="${s.asesorAsignado.nombreCompleto}">Asesor</span>
+                    <span th:unless="${s.asesorAsignado != null}" class="text-muted" style="font-size:0.8rem;">Sin asignar</span>
+                </td>
+                <td class="text-muted" th:text="${#temporals.format(s.fechaCreacion, 'dd/MM/yyyy')}">01/01/2026</td>
+                <td><a th:href="@{'/asesor/' + ${s.id}}" class="btn btn-outline" style="padding:8px 16px; font-size:0.82rem;">Ver</a></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(solicitudes)}">
+                <td colspan="8" class="text-center text-muted" style="padding:32px;">No se encontraron solicitudes con estos filtros.</td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+
+</body>
+</html>
