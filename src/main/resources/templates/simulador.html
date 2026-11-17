@@ -17,11 +17,11 @@
             <div class="form-grid">
                 <div class="field">
                     <label for="monto">Monto del crédito (S/)</label>
-                    <input type="number" id="monto" name="monto" step="100" min="500" max="200000" th:value="${montoInput}" />
+                    <input type="number" id="monto" name="monto" step="100" th:min="${montoMin}" th:max="${montoMax}" min="500" max="200000" th:value="${montoInput}" />
                 </div>
                 <div class="field">
                     <label for="plazoMeses">Plazo (meses)</label>
-                    <input type="number" id="plazoMeses" name="plazoMeses" step="1" min="3" max="60" th:value="${plazoInput}" />
+                    <input type="number" id="plazoMeses" name="plazoMeses" step="1" th:min="${plazoMin}" th:max="${plazoMax}" min="3" max="60" th:value="${plazoInput}" />
                 </div>
                 <div class="field full">
                     <label for="tasaAnual">Tasa de interés anual nominal (%)</label>

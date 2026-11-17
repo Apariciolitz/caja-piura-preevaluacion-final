@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Supervisión global')}"></head>
+<body>
+<div class="panel-shell">
+    <aside th:replace="~{fragments/admin-sidebar :: sidebar(${activo})}"></aside>
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Consola de administración</span>
+                <h2 style="margin:0;">Supervisión global de solicitudes</h2>
+            </div>
+        </div>
+        <div th:if="${mensaje}" class="alert ok" th:text="${mensaje}">Mensaje</div>
+        <div th:if="${error}" class="alert err" th:text="${error}">Error</div>
+        <form class="filter-bar" method="get" th:action="@{/admin/supervision}">
+            <div class="field">
+                <label for="q">Buscar por nombre o DNI</label>
+                <input type="text" id="q" name="q" th:value="${filtroQ}" />
+            </div>
+            <div class="field">
+                <label for="estado">Estado</label>
+                <select id="estado" name="estado">
+                    <option value="">Todos</option>
+                    <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}" th:selected="${e == filtroEstado}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="resultado">Resultado</label>
+                <select id="resultado" name="resultado">
+                    <option value="">Todos</option>
+                    <option th:each="r : ${resultados}" th:value="${r}" th:text="${r.etiqueta}" th:selected="${r == filtroResultado}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="asesorId">Asesor</label>
+                <select id="asesorId" name="asesorId">
+                    <option value="">Todos</option>
+                    <option th:each="a : ${todosUsuarios}" th:value="${a.id}" th:text="${a.nombreCompleto}" th:selected="${filtroAsesorId != null and filtroAsesorId == a.id}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
+            <a href="/admin/supervision" class="btn btn-outline btn-sm">Limpiar</a>
+            <a th:href="@{/admin/supervision/exportar(q=${filtroQ},estado=${filtroEstado},resultado=${filtroResultado},asesorId=${filtroAsesorId})}" class="btn btn-outline btn-sm">Exportar CSV</a>
+        </form>
+
+        <form method="post" th:action="@{/admin/supervision/reasignar}">
+            <div class="filter-bar" style="margin-top:0;">
+                <div class="field">
+                    <label for="asesorDestino">Reasignar las solicitudes marcadas a</label>
+                    <select id="asesorDestino" name="asesorId" required>
+                        <option value="">Elige un asesor activo</option>
+                        <option th:each="a : ${asesoresActivos}" th:value="${a.id}" th:text="${a.nombreCompleto}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Reasignar marcadas</button>
+                <span class="text-muted" style="font-size:.82rem;" th:text="${#lists.size(solicitudes)} + ' solicitud(es) en la lista'">0</span>
+            </div>
+
+            <div class="scroll-x">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="marcarTodas" aria-label="Marcar todas" /></th>
+                    <th>Código</th><th>Solicitante</th><th>Monto / Ingreso</th><th>Resultado</th><th>Estado</th><th>Asesor</th><th>Fecha</th><th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="s : ${solicitudes}">
+                    <td><input type="checkbox" name="ids" th:value="${s.id}" class="fila-check" /></td>
+                    <td th:text="'#CP-' + ${#numbers.formatInteger(s.id, 5)}">#CP-00001</td>
+                    <td>
+                        <div th:text="${s.nombreCompleto}">Nombre</div>
+                        <div class="text-muted" style="font-size:0.78rem;" th:text="${s.dni}">DNI</div>
+                    </td>
+                    <td th:text="'S/ ' + ${#numbers.formatDecimal(s.montoSolicitado,1,'COMMA',0,'POINT')} + ' / S/ ' + ${#numbers.formatDecimal(s.ingresoMensual,1,'COMMA',0,'POINT')}">S/ 5,600 / S/ 1,800</td>
+                    <td><span class="chip" th:classappend="${s.resultado != null and s.resultado.name() == 'PRECALIFICADO'} ? 'ok' : 'review'" th:text="${s.resultado != null ? s.resultado.etiqueta : '—'}">Resultado</span></td>
+                    <td><span class="chip neutral" th:text="${s.estado.etiqueta}">Estado</span></td>
+                    <td>
+                        <span th:if="${s.asesorAsignado != null}" class="chip info" th:text="${s.asesorAsignado.nombreCompleto}">Asesor</span>
+                        <span th:unless="${s.asesorAsignado != null}" class="chip warn">Sin asignar</span>
+                    </td>
+                    <td class="text-muted" th:text="${#temporals.format(s.fechaCreacion, 'dd/MM/yyyy')}">01/01/2026</td>
+                    <td><a th:href="@{'/asesor/' + ${s.id}}" class="btn btn-outline btn-xs">Ver</a></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(solicitudes)}"><td colspan="9" class="text-center text-muted" style="padding:32px;">No se encontraron solicitudes con estos filtros.</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </form>
+        <script>
+            (function () {
+                var todas = document.getElementById('marcarTodas');
+                if (!todas) return;
+                todas.addEventListener('change', function () {
+                    document.querySelectorAll('.fila-check').forEach(function (c) { c.checked = todas.checked; });
+                });
+            })();
+        </script>
+    </main>
+</div>
+</body>
+</html>

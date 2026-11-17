@@ -1,0 +1,18 @@
+<aside th:fragment="sidebar(activo)" class="panel-sidebar">
+    <a th:replace="~{fragments/logo :: logo('/admin', true)}"></a>
+    <span class="admin-tag">Administrador</span>
+    <nav class="panel-nav">
+        <a href="/admin" th:classappend="${activo == 'dashboard'} ? 'active'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Resumen y KPIs</a>
+        <a href="/admin/supervision" th:classappend="${activo == 'supervision'} ? 'active'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/></svg>Supervisión global</a>
+        <a href="/admin/usuarios" th:classappend="${activo == 'usuarios'} ? 'active'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5M17 4.5a3.5 3.5 0 010 7M21.5 20c-.3-2.4-1.5-4-3.5-4.8"/></svg>Usuarios y roles</a>
+        <a href="/admin/parametros" th:classappend="${activo == 'parametros'} ? 'active'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Parámetros</a>
+        <a href="/admin/auditoria" th:classappend="${activo == 'auditoria'} ? 'active'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M10 12h6M10 16h6"/></svg>Auditoría</a>
+        <a href="/admin/base-datos" th:classappend="${activo == 'base-datos'} ? 'active'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6M4 11.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>Base de datos</a>
+        <div class="nav-sep">Operación</div>
+        <a href="/asesor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Panel del asesor</a>
+        <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>Ver sitio público</a>
+        <form th:action="@{/asesor/logout}" method="post" style="margin-top:24px;">
+            <button type="submit" class="btn btn-outline-light btn-block" style="font-size:0.85rem;">Cerrar sesión</button>
+        </form>
+    </nav>
+</aside>

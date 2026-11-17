@@ -6,10 +6,7 @@
 <section class="section" style="min-height:100vh; display:flex; align-items:center;">
     <div class="container-narrow" style="max-width:420px;">
         <div class="text-center" style="margin-bottom:28px;">
-            <a href="/" class="brand" style="justify-content:center;">
-                <span class="brand-mark">CP</span>
-                Caja Piura
-            </a>
+            <a th:replace="~{fragments/logo :: logo('/', false)}"></a>
         </div>
 
         <div class="form-card">

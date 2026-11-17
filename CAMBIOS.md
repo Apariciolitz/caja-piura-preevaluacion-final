@@ -26,3 +26,14 @@ Nota: al agregar `codigoPublico`, Hibernate (`ddl-auto=update`) crea la columna;
 ## Correccion del Kanban (17/11/2026)
 - Error 500 en /asesor/kanban: la plantilla usaba `solicitudes.?[estado == e]` y SpEL no veia la variable `e` dentro del filtro.
   Ahora el controlador calcula `conteos` por estado y la plantilla usa `conteos.get(e)`. El error ya existia desde el Avance 2.
+## Consola de administracion y nuevo logotipo (17/11/2026)
+Rutas `/admin/**` (solo ROLE_ADMIN). Al iniciar sesion, el admin entra a `/admin` y el asesor a `/asesor`.
+- **Resumen y KPIs** (`/admin`): totales, tasa de pre-calificacion, pendientes, estancadas (>3 dias), sin asesor y KPIs por asesor. Logica en `KpiCalculator` (con pruebas).
+- **Supervision global** (`/admin/supervision`): todas las solicitudes con filtros, reasignacion masiva y exportacion CSV.
+- **Usuarios y roles** (`/admin/usuarios`): crear, activar/desactivar, cambiar rol y restablecer contrasena temporal. No permite desactivarse a si mismo ni dejar el sistema sin administrador activo.
+- **Parametros** (`/admin/parametros`): ratio limite de la pre-evaluacion y limites del simulador; aplican a solicitudes nuevas.
+- **Auditoria** (`/admin/auditoria`): inicios de sesion, cambios de estado, reasignaciones, cambios de usuarios y parametros, exportaciones y consultas a la BD.
+- **Base de datos** (`/admin/base-datos`): explorador de solo lectura, con columnas de contrasenas ocultas y cada consulta auditada.
+- **Logotipo**: marca propia en `fragments/logo.html` y `static/img/`.
+- Pruebas nuevas: `AdminModuloTest` (14 pruebas).
+- Limitaciones: la contrasena temporal no obliga a cambio en el primer ingreso; con H2 efimero en Render, usuarios, parametros y auditoria se pierden al redesplegar.

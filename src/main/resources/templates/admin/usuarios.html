@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Usuarios y roles')}"></head>
+<body>
+<div class="panel-shell">
+    <aside th:replace="~{fragments/admin-sidebar :: sidebar(${activo})}"></aside>
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Consola de administración</span>
+                <h2 style="margin:0;">Usuarios y roles</h2>
+            </div>
+        </div>
+        <div th:if="${mensaje}" class="alert ok" th:text="${mensaje}">Mensaje</div>
+        <div th:if="${error}" class="alert err" th:text="${error}">Error</div>
+        <div th:if="${passwordTemporal}" class="pw-box">
+            <strong th:text="'Contraseña temporal de ' + ${passwordDe}">Contraseña temporal</strong><br />
+            <code th:text="${passwordTemporal}">xxxxxxxx</code>
+            <small>Cópiala y entrégala ahora: por seguridad no se vuelve a mostrar. Si se pierde, usa "Restablecer".</small>
+        </div>
+
+        <div class="admin-card" style="margin-bottom:24px;">
+            <h3>Crear usuario</h3>
+            <form method="post" th:action="@{/admin/usuarios}" class="form-row">
+                <div class="field"><label for="username">Usuario</label><input type="text" id="username" name="username" placeholder="ej. mgarcia" pattern="[a-z0-9._-]{3,30}" required /></div>
+                <div class="field"><label for="nombreCompleto">Nombre completo</label><input type="text" id="nombreCompleto" name="nombreCompleto" maxlength="120" required /></div>
+                <div class="field">
+                    <label for="rol">Rol</label>
+                    <select id="rol" name="rol">
+                        <option th:each="r : ${roles}" th:value="${r}" th:text="${r.etiqueta}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Crear cuenta</button>
+            </form>
+        </div>
+
+        <div class="scroll-x">
+        <table class="data-table">
+            <thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody>
+            <tr th:each="u : ${usuarios}">
+                <td class="mono" th:text="${u.username}">usuario</td>
+                <td th:text="${u.nombreCompleto}">Nombre</td>
+                <td>
+                    <form method="post" th:action="@{'/admin/usuarios/' + ${u.id} + '/rol'}" class="inline-form">
+                        <select name="rol" onchange="this.form.submit()" th:disabled="${usuarioActual != null and usuarioActual.id == u.id}">
+                            <option th:each="r : ${roles}" th:value="${r}" th:text="${r.etiqueta}" th:selected="${r == u.rol}"></option>
+                        </select>
+                    </form>
+                </td>
+                <td>
+                    <span th:if="${u.activo}" class="chip ok">Activo</span>
+                    <span th:unless="${u.activo}" class="chip neutral">Desactivado</span>
+                </td>
+                <td>
+                    <form method="post" th:action="@{'/admin/usuarios/' + ${u.id} + '/activo'}" class="inline-form" th:unless="${usuarioActual != null and usuarioActual.id == u.id}">
+                        <input type="hidden" name="activo" th:value="${!u.activo}" />
+                        <button type="submit" class="btn btn-outline btn-xs" th:text="${u.activo} ? 'Desactivar' : 'Reactivar'">Desactivar</button>
+                    </form>
+                    <form method="post" th:action="@{'/admin/usuarios/' + ${u.id} + '/restablecer'}" class="inline-form"
+                          onsubmit="return confirm('¿Generar una contraseña temporal nueva para este usuario?');">
+                        <button type="submit" class="btn btn-outline btn-xs">Restablecer contraseña</button>
+                    </form>
+                    <span th:if="${usuarioActual != null and usuarioActual.id == u.id}" class="text-muted" style="font-size:.78rem;">(tu cuenta)</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <p class="text-muted" style="font-size:.82rem; margin-top:14px;">Las cuentas no se eliminan: se desactivan para conservar el historial y la auditoría. Los administradores también pueden operar como asesores.</p>
+    </main>
+</div>
+</body>
+</html>

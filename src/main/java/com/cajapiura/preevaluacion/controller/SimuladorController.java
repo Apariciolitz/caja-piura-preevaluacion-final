@@ -1,5 +1,6 @@
 package com.cajapiura.preevaluacion.controller;
 
+import com.cajapiura.preevaluacion.service.ParametroService;
 import com.cajapiura.preevaluacion.service.SimuladorCreditoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,22 +22,30 @@ public class SimuladorController {
 
     private final SimuladorCreditoService simuladorService;
 
-    public SimuladorController(SimuladorCreditoService simuladorService) {
+    private final ParametroService parametros;
+
+    public SimuladorController(SimuladorCreditoService simuladorService, ParametroService parametros) {
         this.simuladorService = simuladorService;
+        this.parametros = parametros;
     }
 
     @GetMapping
     public String simular(
             @RequestParam(required = false, defaultValue = "8000") BigDecimal monto,
             @RequestParam(required = false, defaultValue = "18") Integer plazoMeses,
-            @RequestParam(required = false, defaultValue = "24") BigDecimal tasaAnual,
+            @RequestParam(required = false) BigDecimal tasaAnual,
             Model model) {
 
-        // Límites razonables para evitar cálculos absurdos desde la URL.
-        if (monto.compareTo(BigDecimal.valueOf(500)) < 0) monto = BigDecimal.valueOf(500);
-        if (monto.compareTo(BigDecimal.valueOf(200000)) > 0) monto = BigDecimal.valueOf(200000);
-        if (plazoMeses < 3) plazoMeses = 3;
-        if (plazoMeses > 60) plazoMeses = 60;
+        // Límites configurables por el administrador (Parámetros del sistema).
+        BigDecimal montoMin = parametros.montoMin();
+        BigDecimal montoMax = parametros.montoMax();
+        int plazoMin = parametros.plazoMin();
+        int plazoMax = parametros.plazoMax();
+        if (tasaAnual == null) tasaAnual = parametros.tasaDefecto();
+        if (monto.compareTo(montoMin) < 0) monto = montoMin;
+        if (monto.compareTo(montoMax) > 0) monto = montoMax;
+        if (plazoMeses < plazoMin) plazoMeses = plazoMin;
+        if (plazoMeses > plazoMax) plazoMeses = plazoMax;
         if (tasaAnual.compareTo(BigDecimal.ZERO) < 0) tasaAnual = BigDecimal.ZERO;
         if (tasaAnual.compareTo(BigDecimal.valueOf(100)) > 0) tasaAnual = BigDecimal.valueOf(100);
 
@@ -47,6 +56,10 @@ public class SimuladorController {
         model.addAttribute("montoInput", monto);
         model.addAttribute("plazoInput", plazoMeses);
         model.addAttribute("tasaInput", tasaAnual);
+        model.addAttribute("montoMin", montoMin);
+        model.addAttribute("montoMax", montoMax);
+        model.addAttribute("plazoMin", plazoMin);
+        model.addAttribute("plazoMax", plazoMax);
         return "simulador";
     }
 }

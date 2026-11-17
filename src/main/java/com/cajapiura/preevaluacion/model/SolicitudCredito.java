@@ -98,18 +98,25 @@ public class SolicitudCredito {
      * falla de forma explícita en lugar de dejar el resultado vacío (INC-10).
      */
     public void evaluar() {
+        evaluar(new BigDecimal("4"));
+    }
+
+    /** Igual que {@link #evaluar()} pero con el ratio límite configurable por el administrador. */
+    public void evaluar(BigDecimal limite) {
+        if (limite == null || limite.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El ratio límite debe ser mayor a 0");
+        }
         if (ingresoMensual == null || montoSolicitado == null
                 || ingresoMensual.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalStateException(
                     "No se puede evaluar: el ingreso mensual y el monto solicitado deben ser mayores a 0");
         }
-        BigDecimal limite = new BigDecimal("4");
         BigDecimal ratioExacto = montoSolicitado.divide(ingresoMensual, 10, RoundingMode.HALF_UP);
         boolean supera = ratioExacto.compareTo(limite) > 0;
 
         BigDecimal mostrado = ratioExacto.setScale(2, RoundingMode.HALF_UP);
         if (supera && mostrado.compareTo(limite) <= 0) {
-            mostrado = new BigDecimal("4.01"); // coherente con el resultado mostrado
+            mostrado = limite.add(new BigDecimal("0.01")); // coherente con el resultado mostrado
         }
         this.ratio = mostrado;
         this.resultado = supera ? ResultadoEvaluacion.REQUIERE_REVISION : ResultadoEvaluacion.PRECALIFICADO;
