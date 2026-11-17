@@ -46,7 +46,8 @@ public class DocumentoController {
 
         return ResponseEntity.ok()
                 .contentType(tipo)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + documento.getNombreOriginal() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, org.springframework.http.ContentDisposition.attachment()
+                        .filename(documento.getNombreOriginal()).build().toString())
                 .body(recurso);
     }
 }

@@ -5,11 +5,16 @@ import com.cajapiura.preevaluacion.repository.ComentarioSolicitudRepository;
 import com.cajapiura.preevaluacion.repository.HistorialEstadoRepository;
 import com.cajapiura.preevaluacion.repository.SolicitudCreditoRepository;
 import com.cajapiura.preevaluacion.repository.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.time.LocalDate;
 
 /**
@@ -26,17 +31,39 @@ public class DataSeeder implements CommandLineRunner {
     private final HistorialEstadoRepository historialRepository;
     private final ComentarioSolicitudRepository comentarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final String passwordAdmin;
+    private final String passwordAsesores;
+
+    private static final Logger log = LoggerFactory.getLogger(DataSeeder.class);
 
     public DataSeeder(SolicitudCreditoRepository solicitudRepository,
                        UsuarioRepository usuarioRepository,
                        HistorialEstadoRepository historialRepository,
                        ComentarioSolicitudRepository comentarioRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       @Value("${app.seed.admin-password:}") String passwordAdmin,
+                       @Value("${app.seed.asesor-password:}") String passwordAsesores) {
         this.solicitudRepository = solicitudRepository;
         this.usuarioRepository = usuarioRepository;
         this.historialRepository = historialRepository;
         this.comentarioRepository = comentarioRepository;
         this.passwordEncoder = passwordEncoder;
+        // INC-01: ya no hay contraseñas fijas en el código ni en el README. Se leen de variables
+        // de entorno; si no están definidas, se genera una aleatoria y se muestra una sola vez en el log.
+        this.passwordAdmin = definirPassword(passwordAdmin, "admin");
+        this.passwordAsesores = definirPassword(passwordAsesores, "asesores (rpena, jtimana)");
+    }
+
+    private static String definirPassword(String configurada, String cuenta) {
+        if (configurada != null && !configurada.isBlank()) {
+            return configurada;
+        }
+        byte[] bytes = new byte[12];
+        new SecureRandom().nextBytes(bytes);
+        String generada = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        log.warn("Contraseña generada para {}: {} (defina SEED_ADMIN_PASSWORD / SEED_ASESOR_PASSWORD para fijarla)",
+                cuenta, generada);
+        return generada;
     }
 
     @Override
@@ -50,11 +77,11 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void sembrarUsuarios() {
-        usuarioRepository.save(new Usuario("admin", passwordEncoder.encode("cajapiura2026"),
+        usuarioRepository.save(new Usuario("admin", passwordEncoder.encode(passwordAdmin),
                 "Administrador del sistema", RolUsuario.ADMIN));
-        usuarioRepository.save(new Usuario("rpena", passwordEncoder.encode("asesor123"),
+        usuarioRepository.save(new Usuario("rpena", passwordEncoder.encode(passwordAsesores),
                 "Rosa Peña Castillo", RolUsuario.ASESOR));
-        usuarioRepository.save(new Usuario("jtimana", passwordEncoder.encode("asesor123"),
+        usuarioRepository.save(new Usuario("jtimana", passwordEncoder.encode(passwordAsesores),
                 "Jorge Timaná Ruiz", RolUsuario.ASESOR));
     }
 

@@ -22,9 +22,9 @@ public class ResultadoController {
         this.pdfService = pdfService;
     }
 
-    @GetMapping("/resultado/{id}")
-    public String resultado(@PathVariable Long id, Model model) {
-        return service.buscarPorId(id)
+    @GetMapping("/resultado/{codigo}")
+    public String resultado(@PathVariable String codigo, Model model) {
+        return service.buscarPorCodigo(codigo)
                 .map(solicitud -> {
                     model.addAttribute("solicitud", solicitud);
                     return "resultado";
@@ -32,10 +32,11 @@ public class ResultadoController {
                 .orElse("redirect:/pre-evaluacion");
     }
 
-    @GetMapping("/resultado/{id}/comprobante.pdf")
-    public ResponseEntity<byte[]> comprobante(@PathVariable Long id) {
-        SolicitudCredito solicitud = service.buscarPorId(id)
+    @GetMapping("/resultado/{codigo}/comprobante.pdf")
+    public ResponseEntity<byte[]> comprobante(@PathVariable String codigo) {
+        SolicitudCredito solicitud = service.buscarPorCodigo(codigo)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
+        Long id = solicitud.getId();
 
         byte[] pdf = pdfService.generarComprobante(solicitud);
         String nombreArchivo = "comprobante-CP-" + String.format("%05d", id) + ".pdf";

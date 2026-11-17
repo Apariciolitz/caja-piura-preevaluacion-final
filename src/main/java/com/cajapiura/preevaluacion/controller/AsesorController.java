@@ -99,13 +99,16 @@ public class AsesorController {
     }
 
     @PostMapping("/{id}/reasignar")
-    public String reasignar(@PathVariable Long id, @RequestParam Long asesorId) {
-        service.reasignarAsesor(id, asesorId);
+    public String reasignar(@PathVariable Long id, @RequestParam Long asesorId, Principal principal) {
+        service.reasignarAsesor(id, asesorId, usuarioActual(principal));
         return "redirect:/asesor/" + id;
     }
 
     @PostMapping("/{id}/comentarios")
     public String agregarComentario(@PathVariable Long id, @RequestParam String texto, Principal principal) {
+        if (texto == null || texto.isBlank() || texto.trim().length() > 1000) {
+            return "redirect:/asesor/" + id + "#comentarios"; // INC-12: no se guardan comentarios vacíos o excesivos
+        }
         service.agregarComentario(id, usuarioActual(principal), texto);
         return "redirect:/asesor/" + id + "#comentarios";
     }

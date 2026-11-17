@@ -6,10 +6,10 @@
         return;
     }
 
-    var paletteBrown = "#B6672C";
-    var paletteTeal = "#1F4E4A";
+    var paletteBrown = "#235347";
+    var paletteTeal = "#8EB69B";
     var paletteRed = "#A24A3B";
-    var paletteBlue = "#2F6F9E";
+    var paletteBlue = "#E3B04B";
 
     // Tendencia de solicitudes por día (gráfico de línea)
     var tendencia = metricas.tendenciaDias || {};
@@ -21,7 +21,7 @@
                 label: "Solicitudes",
                 data: Object.values(tendencia),
                 borderColor: paletteBrown,
-                backgroundColor: "rgba(182,103,44,0.15)",
+                backgroundColor: "rgba(35,83,71,0.15)",
                 tension: 0.35,
                 fill: true,
                 pointRadius: 3

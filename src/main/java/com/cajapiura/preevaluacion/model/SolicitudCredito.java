@@ -62,6 +62,14 @@ public class SolicitudCredito {
 
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
+    /**
+     * Código público no adivinable (UUID) con el que el cliente accede a su
+     * resultado, comprobante y cita. Reemplaza al ID secuencial en las URLs
+     * públicas (incidente INC-02).
+     */
+    @Column(unique = true, length = 36)
+    private String codigoPublico = java.util.UUID.randomUUID().toString();
+
     // Datos de la cita (opcional, se completan en el paso de agendamiento)
     private LocalDate citaFecha;
     private String citaHora;
@@ -83,15 +91,28 @@ public class SolicitudCredito {
     public SolicitudCredito() {
     }
 
-    /** Calcula el ratio deuda/ingreso y determina el resultado preliminar. */
+    /**
+     * Calcula el ratio monto/ingreso y determina el resultado preliminar.
+     * La decisión se toma con el ratio exacto (no el redondeado), para que un
+     * caso como 4.004 no quede como PRECALIFICADO (INC-04). Si faltan datos,
+     * falla de forma explícita en lugar de dejar el resultado vacío (INC-10).
+     */
     public void evaluar() {
-        if (ingresoMensual != null && montoSolicitado != null
-                && ingresoMensual.compareTo(BigDecimal.ZERO) > 0) {
-            this.ratio = montoSolicitado.divide(ingresoMensual, 2, RoundingMode.HALF_UP);
-            this.resultado = ratio.compareTo(new BigDecimal("4")) <= 0
-                    ? ResultadoEvaluacion.PRECALIFICADO
-                    : ResultadoEvaluacion.REQUIERE_REVISION;
+        if (ingresoMensual == null || montoSolicitado == null
+                || ingresoMensual.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalStateException(
+                    "No se puede evaluar: el ingreso mensual y el monto solicitado deben ser mayores a 0");
         }
+        BigDecimal limite = new BigDecimal("4");
+        BigDecimal ratioExacto = montoSolicitado.divide(ingresoMensual, 10, RoundingMode.HALF_UP);
+        boolean supera = ratioExacto.compareTo(limite) > 0;
+
+        BigDecimal mostrado = ratioExacto.setScale(2, RoundingMode.HALF_UP);
+        if (supera && mostrado.compareTo(limite) <= 0) {
+            mostrado = new BigDecimal("4.01"); // coherente con el resultado mostrado
+        }
+        this.ratio = mostrado;
+        this.resultado = supera ? ResultadoEvaluacion.REQUIERE_REVISION : ResultadoEvaluacion.PRECALIFICADO;
     }
 
     // ----- Getters y setters -----
@@ -182,6 +203,14 @@ public class SolicitudCredito {
 
     public void setEstado(EstadoSolicitud estado) {
         this.estado = estado;
+    }
+
+    public String getCodigoPublico() {
+        return codigoPublico;
+    }
+
+    public void setCodigoPublico(String codigoPublico) {
+        this.codigoPublico = codigoPublico;
     }
 
     public LocalDateTime getFechaCreacion() {

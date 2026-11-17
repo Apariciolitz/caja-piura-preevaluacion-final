@@ -55,4 +55,14 @@ class SimuladorCreditoServiceTest {
         assertTrue(resultado.getCuotaMensual().compareTo(new BigDecimal("499")) > 0);
         assertTrue(resultado.getCuotaMensual().compareTo(new BigDecimal("501")) < 0);
     }
+
+    @Test
+    void rechazaPlazoCeroYMontoNegativo() {
+        // INC-11: la validación vive en el servicio, no solo en el controlador.
+        SimuladorCreditoService servicio = new SimuladorCreditoService();
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class,
+                () -> servicio.simular(new BigDecimal("1000"), 0, new BigDecimal("24")));
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class,
+                () -> servicio.simular(new BigDecimal("-500"), 12, new BigDecimal("24")));
+    }
 }

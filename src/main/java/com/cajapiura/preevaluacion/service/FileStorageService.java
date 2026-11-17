@@ -43,8 +43,10 @@ public class FileStorageService {
         if (archivo == null || archivo.isEmpty()) {
             return;
         }
+        ValidadorArchivos.validar(archivo.getOriginalFilename(), archivo.getContentType(), archivo.getSize())
+                .ifPresent(mensaje -> { throw new IllegalArgumentException(mensaje); });
         try {
-            String extension = obtenerExtension(archivo.getOriginalFilename());
+            String extension = ValidadorArchivos.extensionDe(archivo.getOriginalFilename());
             String nombreAlmacenado = UUID.randomUUID() + extension;
             Path destino = raiz.resolve(nombreAlmacenado);
             Files.copy(archivo.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
@@ -52,7 +54,7 @@ public class FileStorageService {
             DocumentoAdjunto documento = new DocumentoAdjunto();
             documento.setSolicitud(solicitud);
             documento.setTipoDocumento(tipoDocumento);
-            documento.setNombreOriginal(archivo.getOriginalFilename());
+            documento.setNombreOriginal(ValidadorArchivos.sanearNombre(archivo.getOriginalFilename()));
             documento.setNombreAlmacenado(nombreAlmacenado);
             documento.setContentType(archivo.getContentType());
             documento.setTamanioBytes(archivo.getSize());
@@ -75,10 +77,4 @@ public class FileStorageService {
                 .orElseThrow(() -> new IllegalArgumentException("Documento no encontrado"));
     }
 
-    private String obtenerExtension(String nombreOriginal) {
-        if (nombreOriginal == null || !nombreOriginal.contains(".")) {
-            return "";
-        }
-        return nombreOriginal.substring(nombreOriginal.lastIndexOf('.'));
-    }
 }
