@@ -22,3 +22,7 @@ Nota: al agregar `codigoPublico`, Hibernate (`ddl-auto=update`) crea la columna;
 - Animaciones: aparicion al hacer scroll, contadores, hero con zoom lento, tarjetas flotantes, cinta de valores. Respetan `prefers-reduced-motion`. Logica en `static/js/ui.js`.
 - Imagenes en la nube (Unsplash) en `templates/landing.html`; si una URL falla, se muestra un degradado verde.
 - Fuentes: Manrope (titulos) e Inter (texto). Sin emojis: iconos SVG en linea.
+
+## Correccion del Kanban (17/11/2026)
+- Error 500 en /asesor/kanban: la plantilla usaba `solicitudes.?[estado == e]` y SpEL no veia la variable `e` dentro del filtro.
+  Ahora el controlador calcula `conteos` por estado y la plantilla usa `conteos.get(e)`. El error ya existia desde el Avance 2.

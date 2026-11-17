@@ -19,7 +19,7 @@
             <div class="kanban-column" th:each="e : ${estados}" th:attr="data-estado=${e}">
                 <div class="kanban-column-head">
                     <span th:text="${e.etiqueta}">Estado</span>
-                    <span class="kanban-count" th:text="${#lists.size(solicitudes.?[estado == e])}">0</span>
+                    <span class="kanban-count" th:text="${conteos.get(e)}">0</span>
                 </div>
                 <div class="kanban-card" draggable="true"
                      th:each="s : ${solicitudes}" th:if="${s.estado == e}"
