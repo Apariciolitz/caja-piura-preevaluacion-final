@@ -26,16 +26,14 @@ Nota: al agregar `codigoPublico`, Hibernate (`ddl-auto=update`) crea la columna;
 ## Correccion del Kanban (17/11/2026)
 - Error 500 en /asesor/kanban: la plantilla usaba `solicitudes.?[estado == e]` y SpEL no veia la variable `e` dentro del filtro.
   Ahora el controlador calcula `conteos` por estado y la plantilla usa `conteos.get(e)`. El error ya existia desde el Avance 2.
-
 ## Consola de administracion y nuevo logotipo (17/11/2026)
 Rutas `/admin/**` (solo ROLE_ADMIN). Al iniciar sesion, el admin entra a `/admin` y el asesor a `/asesor`.
-- **Resumen y KPIs** (`/admin`): totales, tasa de pre-calificacion, pendientes, estancadas (>3 dias), sin asesor, y KPIs por asesor (asignadas, activas, cerradas, tasa de cierre, monto gestionado). Logica en `KpiCalculator` (pura, con pruebas).
+- **Resumen y KPIs** (`/admin`): totales, tasa de pre-calificacion, pendientes, estancadas (>3 dias), sin asesor y KPIs por asesor. Logica en `KpiCalculator` (con pruebas).
 - **Supervision global** (`/admin/supervision`): todas las solicitudes con filtros, reasignacion masiva y exportacion CSV.
-- **Usuarios y roles** (`/admin/usuarios`): crear, activar/desactivar, cambiar rol, restablecer contrasena (temporal, se muestra una sola vez). Protecciones: no desactivarse a si mismo ni dejar el sistema sin administrador activo.
-- **Parametros** (`/admin/parametros`): ratio limite de la pre-evaluacion y limites del simulador, validados y guardados en la tabla `parametros_sistema`. Aplican a solicitudes nuevas.
-- **Auditoria** (`/admin/auditoria`): tabla `auditoria` con inicios de sesion (exitosos y fallidos), solicitudes creadas, cambios de estado, reasignaciones, cambios de usuarios/parametros, exportaciones y consultas a la BD.
-- **Base de datos** (`/admin/base-datos`): explorador de SOLO LECTURA (tablas, estructura, filas paginadas, CSV). El nombre de tabla se valida contra el catalogo; las columnas de contrasenas se ocultan; cada consulta queda auditada. La consola SQL de H2 sigue apagada salvo `H2_CONSOLE=true`.
-- **Logotipo**: marca propia (C con moneda) + nombre + descriptor, en `templates/fragments/logo.html` y `static/img/logo*.svg` / `favicon.svg`. Para usar el logotipo oficial, reemplazar esos archivos.
-- Cambios de codigo existentes: `SolicitudCredito.evaluar(BigDecimal limite)` (el `evaluar()` sin argumentos sigue usando 4), `PreEvaluacionService` (auditoria y limite configurable), `SimuladorController` (limites configurables), `SecurityConfig` (rutas /admin, redireccion por rol, auditoria de login), `DataSeeder` (crea parametros por defecto).
-- Pruebas nuevas: `AdminModuloTest` (14 pruebas sin base de datos).
-- Limitaciones conocidas: la contrasena temporal no obliga a cambiarla en el primer ingreso; la auditoria muestra los ultimos 500 eventos; con H2 efimero en Render, usuarios creados, parametros y auditoria se pierden al redesplegar.
+- **Usuarios y roles** (`/admin/usuarios`): crear, activar/desactivar, cambiar rol y restablecer contrasena temporal. No permite desactivarse a si mismo ni dejar el sistema sin administrador activo.
+- **Parametros** (`/admin/parametros`): ratio limite de la pre-evaluacion y limites del simulador; aplican a solicitudes nuevas.
+- **Auditoria** (`/admin/auditoria`): inicios de sesion, cambios de estado, reasignaciones, cambios de usuarios y parametros, exportaciones y consultas a la BD.
+- **Base de datos** (`/admin/base-datos`): explorador de solo lectura, con columnas de contrasenas ocultas y cada consulta auditada.
+- **Logotipo**: marca propia en `fragments/logo.html` y `static/img/`.
+- Pruebas nuevas: `AdminModuloTest` (14 pruebas).
+- Limitaciones: la contrasena temporal no obliga a cambio en el primer ingreso; con H2 efimero en Render, usuarios, parametros y auditoria se pierden al redesplegar.
