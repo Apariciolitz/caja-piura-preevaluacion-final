@@ -13,7 +13,8 @@
             <p>Elige la fecha, hora y agencia de tu preferencia. Tu asesor ya tendrá tu pre-evaluación lista.</p>
         </div>
 
-        <form class="form-card" th:action="@{'/cita/' + ${solicitud.id}}" method="post">
+        <div class="error-msg" th:if="${param.error}" style="text-align:center;margin-bottom:12px;">La fecha elegida no es válida. Elige una fecha posterior a hoy.</div>
+        <form class="form-card" th:action="@{'/cita/' + ${solicitud.codigoPublico}}" method="post">
             <div class="form-grid">
                 <div class="field">
                     <label for="fecha">Fecha</label>

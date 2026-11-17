@@ -55,15 +55,18 @@ public class PreEvaluacionService {
             return null;
         }
         return asesores.stream()
-                .min(Comparator.comparingLong(a -> repository.findAll().stream()
-                        .filter(s -> a.equals(s.getAsesorAsignado()))
-                        .filter(s -> s.getEstado() != EstadoSolicitud.CERRADO)
-                        .count()))
+                .min(Comparator.comparingLong(a ->
+                        repository.countByAsesorAsignadoAndEstadoNot(a, EstadoSolicitud.CERRADO)))
                 .orElse(asesores.get(0));
     }
 
     public Optional<SolicitudCredito> buscarPorId(Long id) {
         return repository.findById(id);
+    }
+
+    /** Búsqueda para las páginas públicas del cliente: por código no adivinable (INC-02). */
+    public Optional<SolicitudCredito> buscarPorCodigo(String codigoPublico) {
+        return repository.findByCodigoPublico(codigoPublico);
     }
 
     public List<SolicitudCredito> listarTodas() {
@@ -93,6 +96,9 @@ public class PreEvaluacionService {
     }
 
     public SolicitudCredito agendarCita(Long id, LocalDate fecha, String hora, String agencia) {
+        if (fecha == null || !fecha.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha de la cita debe ser posterior a hoy");
+        }
         SolicitudCredito solicitud = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
         solicitud.setCitaFecha(fecha);
@@ -112,13 +118,25 @@ public class PreEvaluacionService {
         return repository.save(solicitud);
     }
 
-    public SolicitudCredito reasignarAsesor(Long id, Long nuevoAsesorId) {
+    /** Reasigna el caso, validando al nuevo asesor y dejando registro en el historial (INC-06). */
+    public SolicitudCredito reasignarAsesor(Long id, Long nuevoAsesorId, Usuario quienReasigna) {
         SolicitudCredito solicitud = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
         Usuario nuevoAsesor = usuarioRepository.findById(nuevoAsesorId)
                 .orElseThrow(() -> new IllegalArgumentException("Asesor no encontrado"));
+        if (!nuevoAsesor.isActivo() || nuevoAsesor.getRol() != RolUsuario.ASESOR) {
+            throw new IllegalArgumentException("Solo se puede asignar a un asesor activo");
+        }
+        Usuario anterior = solicitud.getAsesorAsignado();
         solicitud.setAsesorAsignado(nuevoAsesor);
-        return repository.save(solicitud);
+        SolicitudCredito guardada = repository.save(solicitud);
+
+        String detalle = "Reasignado de "
+                + (anterior == null ? "sin asesor" : anterior.getNombreCompleto())
+                + " a " + nuevoAsesor.getNombreCompleto();
+        historialRepository.save(new HistorialEstado(guardada, guardada.getEstado(), guardada.getEstado(),
+                quienReasigna, detalle));
+        return guardada;
     }
 
     private void registrarCambioEstado(SolicitudCredito solicitud, EstadoSolicitud nuevoEstado,
@@ -138,9 +156,16 @@ public class PreEvaluacionService {
     }
 
     public ComentarioSolicitud agregarComentario(Long solicitudId, Usuario autor, String texto) {
+        if (texto == null || texto.isBlank()) {
+            throw new IllegalArgumentException("El comentario no puede estar vacío");
+        }
+        String limpio = texto.trim();
+        if (limpio.length() > 1000) {
+            throw new IllegalArgumentException("El comentario no puede superar los 1000 caracteres");
+        }
         SolicitudCredito solicitud = repository.findById(solicitudId)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
-        ComentarioSolicitud comentario = new ComentarioSolicitud(solicitud, autor, texto);
+        ComentarioSolicitud comentario = new ComentarioSolicitud(solicitud, autor, limpio);
         return comentarioRepository.save(comentario);
     }
 }

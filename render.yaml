@@ -18,9 +18,9 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: ASESOR_USER
-        value: asesor
-      - key: ASESOR_PASSWORD
+      - key: SEED_ADMIN_PASSWORD
+        generateValue: true
+      - key: SEED_ASESOR_PASSWORD
         generateValue: true
       - key: PORT
         value: 8080

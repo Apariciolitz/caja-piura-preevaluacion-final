@@ -54,6 +54,16 @@ public class SimuladorCreditoService {
      * @param tasaAnualNominal  tasa de interés anual nominal, en porcentaje (ej. 24 = 24% anual)
      */
     public ResultadoSimulacion simular(BigDecimal monto, int plazoMeses, BigDecimal tasaAnualNominal) {
+        // Validación en la propia capa de servicio (INC-11): no depende de que el controlador acote los datos.
+        if (monto == null || monto.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El monto debe ser mayor a 0");
+        }
+        if (plazoMeses < 1) {
+            throw new IllegalArgumentException("El plazo debe ser de al menos 1 mes");
+        }
+        if (tasaAnualNominal == null || tasaAnualNominal.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("La tasa anual no puede ser negativa");
+        }
         BigDecimal tasaMensual = tasaAnualNominal
                 .divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP)
                 .divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP);

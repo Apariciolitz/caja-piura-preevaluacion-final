@@ -17,9 +17,9 @@ public class CitaController {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
-    public String formulario(@PathVariable Long id, Model model) {
-        return service.buscarPorId(id)
+    @GetMapping("/{codigo}")
+    public String formulario(@PathVariable String codigo, Model model) {
+        return service.buscarPorCodigo(codigo)
                 .map(solicitud -> {
                     model.addAttribute("solicitud", solicitud);
                     model.addAttribute("fechaMinima", LocalDate.now().plusDays(1));
@@ -28,18 +28,27 @@ public class CitaController {
                 .orElse("redirect:/pre-evaluacion");
     }
 
-    @PostMapping("/{id}")
-    public String agendar(@PathVariable Long id,
+    @PostMapping("/{codigo}")
+    public String agendar(@PathVariable String codigo,
                            @RequestParam String fecha,
                            @RequestParam String hora,
                            @RequestParam String agencia) {
-        service.agendarCita(id, LocalDate.parse(fecha), hora, agencia);
-        return "redirect:/cita/" + id + "/confirmada";
+        // INC-05: fecha inválida o pasada ya no produce HTTP 500; se vuelve al formulario con un aviso.
+        var solicitud = service.buscarPorCodigo(codigo);
+        if (solicitud.isEmpty()) {
+            return "redirect:/pre-evaluacion";
+        }
+        try {
+            service.agendarCita(solicitud.get().getId(), LocalDate.parse(fecha), hora, agencia);
+        } catch (java.time.format.DateTimeParseException | IllegalArgumentException e) {
+            return "redirect:/cita/" + codigo + "?error=fecha";
+        }
+        return "redirect:/cita/" + codigo + "/confirmada";
     }
 
-    @GetMapping("/{id}/confirmada")
-    public String confirmada(@PathVariable Long id, Model model) {
-        return service.buscarPorId(id)
+    @GetMapping("/{codigo}/confirmada")
+    public String confirmada(@PathVariable String codigo, Model model) {
+        return service.buscarPorCodigo(codigo)
                 .map(solicitud -> {
                     model.addAttribute("solicitud", solicitud);
                     return "cita-confirmada";

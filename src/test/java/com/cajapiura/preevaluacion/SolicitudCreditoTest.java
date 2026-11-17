@@ -47,4 +47,35 @@ class SolicitudCreditoTest {
 
         assertEquals(ResultadoEvaluacion.PRECALIFICADO, s.getResultado());
     }
+
+    @Test
+    void ratioRealMayorACuatroNoSeRedondeaAPrecalificado() {
+        // INC-04: 4004 / 1000 = 4.004; antes se redondeaba a 4.00 y quedaba PRECALIFICADO.
+        SolicitudCredito s = new SolicitudCredito();
+        s.setIngresoMensual(new BigDecimal("1000"));
+        s.setMontoSolicitado(new BigDecimal("4004"));
+
+        s.evaluar();
+
+        assertEquals(ResultadoEvaluacion.REQUIERE_REVISION, s.getResultado());
+        assertEquals(new BigDecimal("4.01"), s.getRatio());
+    }
+
+    @Test
+    void sinIngresoValidoLaEvaluacionFallaDeFormaExplicita() {
+        // INC-10: antes dejaba el resultado en null sin avisar.
+        SolicitudCredito s = new SolicitudCredito();
+        s.setIngresoMensual(BigDecimal.ZERO);
+        s.setMontoSolicitado(new BigDecimal("4000"));
+
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class, s::evaluar);
+    }
+
+    @Test
+    void cadaSolicitudTieneUnCodigoPublicoDistinto() {
+        // INC-02: el cliente accede por código no adivinable, no por ID secuencial.
+        assertEquals(36, new SolicitudCredito().getCodigoPublico().length());
+        org.junit.jupiter.api.Assertions.assertNotEquals(
+                new SolicitudCredito().getCodigoPublico(), new SolicitudCredito().getCodigoPublico());
+    }
 }

@@ -7,27 +7,29 @@
 
 <!-- ===================== HERO ===================== -->
 <header class="hero">
+    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=70" alt="Emprendedores atendiendo su negocio" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" /></div>
     <div class="hero-orb o1"></div>
     <div class="hero-orb o2"></div>
     <div class="container hero-inner">
-        <div>
-            <span class="hero-badge">● Pre-evaluación crediticia digital</span>
-            <h1>Tu crédito, aprobado<br/>más rápido que nunca</h1>
-            <p class="lead">Evalúa tu crédito sin salir de casa. Completa tus datos en línea y recibe una pre-evaluación en minutos. Si calificas, agenda tu cita ya con todo listo: sin colas ni viajes de más.</p>
+        <div class="hero-anim">
+            <span class="hero-badge"><span class="live"></span>Pre-evaluación crediticia digital</span>
+            <h1>Tu crédito, <span class="accent">más cerca</span><br/>y más rápido que nunca</h1>
+            <p class="lead">Evalúa tu crédito sin salir de casa. Completa tus datos en línea y recibe una pre-evaluación en minutos. Si calificas, agenda tu cita con todo listo: sin colas ni viajes de más.</p>
             <div class="hero-actions">
-                <a href="/pre-evaluacion" class="btn btn-primary">Empezar pre-evaluación</a>
+                <a href="/pre-evaluacion" class="btn btn-accent">Empezar pre-evaluación <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
                 <a href="#como-funciona" class="btn btn-outline-light">Ver cómo funciona</a>
             </div>
             <div class="hero-trust">
-                <div class="trust-item"><span class="dot"></span>Confidencial: privado y juzgamiento libre</div>
-                <div class="trust-item"><span class="dot"></span>Personalizado según tu perfil</div>
-                <div class="trust-item"><span class="dot"></span>Flexible: define tú el proceso</div>
+                <div class="trust-item"><span class="dot"></span>Confidencial y seguro</div>
+                <div class="trust-item"><span class="dot"></span>Personalizado a tu perfil</div>
+                <div class="trust-item"><span class="dot"></span>Sin costo y sin compromiso</div>
             </div>
         </div>
 
-        <div class="hero-visual">
-            <div class="mini-form-title">Prueba la pre-evaluación</div>
-            <div class="mini-form-sub">Estos valores son ilustrativos del funcionamiento del proyecto.</div>
+        <div class="hero-visual" style="position:relative;">
+            <div class="float-chip c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5L16 9.5"/></svg>Datos protegidos</div>
+            <div class="mini-form-title">Así se ve tu pre-evaluación</div>
+            <div class="mini-form-sub">Valores ilustrativos del funcionamiento del sistema.</div>
             <div class="mini-field">
                 <label>Ingreso mensual (S/)</label>
                 <div class="fake-input">1,800</div>
@@ -40,53 +42,76 @@
                 <label>Destino del crédito</label>
                 <div class="fake-input">Capital de trabajo</div>
             </div>
+            <div class="mini-progress"><i></i></div>
+            <div class="mini-progress-label"><span>Ratio monto / ingreso</span><span>3.11 de 4.00</span></div>
             <div class="mini-result">
                 <span class="tag">Resultado preliminar</span>
                 <strong>Pre-calificado</strong>
-                <span>Con estos datos, el siguiente paso es agendar tu cita con un asesor.</span>
+                <span>El siguiente paso es agendar tu cita con un asesor.</span>
             </div>
+            <div class="float-chip c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>Resultado en segundos</div>
         </div>
     </div>
 </header>
 
 <div class="container">
-    <div class="stats-bar">
-        <div class="stat-cell"><span class="num">44 años</span><span class="label">formando parte del sistema financiero peruano</span></div>
-        <div class="stat-cell"><span class="num">140+</span><span class="label">agencias en el norte del país</span></div>
-        <div class="stat-cell"><span class="num">56%</span><span class="label">de operaciones ya realizadas por canales digitales</span></div>
-        <div class="stat-cell"><span class="num">1,500+</span><span class="label">agentes corresponsales para depósitos y pagos</span></div>
+    <div class="stats-bar reveal">
+        <div class="stat-cell"><span class="num" data-count="44" data-suffix=" años">44 años</span><span class="label">formando parte del sistema financiero peruano</span></div>
+        <div class="stat-cell"><span class="num" data-count="140" data-suffix="+">140+</span><span class="label">agencias en el norte del país</span></div>
+        <div class="stat-cell"><span class="num" data-count="56" data-suffix="%">56%</span><span class="label">de operaciones realizadas por canales digitales</span></div>
+        <div class="stat-cell"><span class="num" data-count="1500" data-suffix="+">1,500+</span><span class="label">agentes corresponsales para depósitos y pagos</span></div>
     </div>
 </div>
 
 <!-- ===================== COMO FUNCIONA ===================== -->
 <section class="section" id="como-funciona">
     <div class="container">
-        <div class="section-head center" style="margin-left:auto;margin-right:auto;">
+        <div class="section-head center reveal">
             <span class="section-kicker">Cómo funciona</span>
             <h2>De la agencia física a un formulario en línea</h2>
             <p>Un flujo simple, pensado para que el cliente sepa en minutos si su solicitud es viable, y para que el asesor de negocios reciba casos ya adelantados.</p>
         </div>
 
         <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-num">1</div>
+            <div class="step-card reveal" style="--d:.0s">
+                <span class="n">1</span><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h4"/></svg></div>
                 <h4>Completa el formulario</h4>
                 <p>Ingreso mensual, monto solicitado y destino del crédito.</p>
             </div>
-            <div class="step-card">
-                <div class="step-num">2</div>
+            <div class="step-card reveal" style="--d:.12s">
+                <span class="n">2</span><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg></div>
                 <h4>Sube tus documentos</h4>
                 <p>DNI y sustento de ingresos, directamente desde tu dispositivo.</p>
             </div>
-            <div class="step-card">
-                <div class="step-num">3</div>
+            <div class="step-card reveal" style="--d:.24s">
+                <span class="n">3</span><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
                 <h4>Resultado instantáneo</h4>
                 <p>El sistema calcula tu pre-calificación en segundos.</p>
             </div>
-            <div class="step-card">
-                <div class="step-num">4</div>
+            <div class="step-card reveal" style="--d:.36s">
+                <span class="n">4</span><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></div>
                 <h4>Agenda tu cita</h4>
                 <p>Si calificas, reservas cita en agencia con el proceso adelantado.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== BANDA CON IMAGEN ===================== -->
+<section class="section-tight">
+    <div class="container">
+        <div class="photo-band reveal">
+            <div class="pb-img"><img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1400&q=70" alt="Asesor de negocios conversando con un cliente" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" /></div>
+            <div class="pb-body">
+                <span class="section-kicker">Acompañamiento real</span>
+                <h2>La tecnología adelanta el proceso; un asesor lo cierra contigo</h2>
+                <p>El sistema nunca reemplaza la evaluación formal. Te da una primera respuesta clara y prepara tu caso para que tu asesor de negocios lo revise con todo en orden.</p>
+                <ul class="pb-list">
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg>Respuesta preliminar en minutos, desde cualquier lugar</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg>Documentos digitales protegidos y con acceso restringido</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg>Tu cita queda lista con el expediente adelantado</li>
+                </ul>
+                <div><a href="/pre-evaluacion" class="btn btn-accent">Hacer mi pre-evaluación <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
             </div>
         </div>
     </div>
@@ -95,28 +120,28 @@
 <!-- ===================== COMPARACION ===================== -->
 <section class="section-tight" id="comparacion">
     <div class="container">
-        <div class="section-head">
-            <span class="section-kicker">Antes vs. ahora</span>
+        <div class="section-head reveal">
+            <span class="section-kicker">Antes y ahora</span>
             <h2>Menos fricción para el cliente y para la Caja</h2>
         </div>
 
         <div class="compare-grid">
-            <div class="compare-card old">
-                <h3>😓 Proceso actual</h3>
+            <div class="compare-card old reveal-left">
+                <h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 15.5c1-1.3 2.2-2 3.5-2s2.5.7 3.5 2M9 9.5h.01M15 9.5h.01"/></svg></span>Proceso actual</h3>
                 <ul class="compare-list">
-                    <li><span class="icon-x">✕</span> El cliente debe trasladarse solo para saber si califica</li>
-                    <li><span class="icon-x">✕</span> Documentos en papel y espera de varios días</li>
-                    <li><span class="icon-x">✕</span> El alcance se reduce en zonas rurales</li>
-                    <li><span class="icon-x">✕</span> Asesores saturados con consultas que no califican</li>
+                    <li><svg class="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>El cliente debe trasladarse solo para saber si califica</li>
+                    <li><svg class="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Documentos en papel y espera de varios días</li>
+                    <li><svg class="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>El alcance se reduce en zonas rurales</li>
+                    <li><svg class="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Asesores saturados con consultas que no califican</li>
                 </ul>
             </div>
-            <div class="compare-card new">
-                <h3>✨ Con pre-evaluación digital</h3>
+            <div class="compare-card new reveal-right">
+                <h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 5.3 5.6.6-4.2 3.9 1.2 5.7L12 15.6 7 18.5l1.2-5.7L4 8.9l5.6-.6L12 3z"/></svg></span>Con pre-evaluación digital</h3>
                 <ul class="compare-list">
-                    <li><span class="icon-check">✓</span> Pre-calificación en minutos, desde cualquier lugar</li>
-                    <li><span class="icon-check">✓</span> Documentos digitales, sin papeleo</li>
-                    <li><span class="icon-check">✓</span> Mismo acceso para zonas urbanas y rurales</li>
-                    <li><span class="icon-check">✓</span> Asesores reciben solo casos ya filtrados y repartidos en equipo</li>
+                    <li><svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Pre-calificación en minutos, desde cualquier lugar</li>
+                    <li><svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Documentos digitales, sin papeleo</li>
+                    <li><svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Mismo acceso para zonas urbanas y rurales</li>
+                    <li><svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Asesores reciben solo casos ya filtrados y repartidos en equipo</li>
                 </ul>
             </div>
         </div>
@@ -126,12 +151,12 @@
 <!-- ===================== CALCULADORA CTA ===================== -->
 <section class="section-tight">
     <div class="container">
-        <div class="calc-panel">
+        <div class="calc-panel reveal">
             <div class="calc-left">
                 <span class="section-kicker">Pre-evaluación</span>
                 <h3>¿Calificas para tu próximo crédito?</h3>
-                <p class="text-muted">Ingresa tu ingreso mensual y el monto que necesitas. Calculamos al instante la relación cuota/ingreso y te decimos si estás en condiciones de continuar con la evaluación formal.</p>
-                <a href="/pre-evaluacion" class="btn btn-primary">Hacer mi pre-evaluación ahora</a>
+                <p class="text-muted">Ingresa tu ingreso mensual y el monto que necesitas. Calculamos al instante la relación monto/ingreso y te decimos si estás en condiciones de continuar con la evaluación formal.</p>
+                <a href="/pre-evaluacion" class="btn btn-primary">Hacer mi pre-evaluación ahora <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
             <div class="calc-right">
                 <h3>¿Aún no decides el monto?</h3>
@@ -142,24 +167,38 @@
     </div>
 </section>
 
-<!-- ===================== SOBRE CAJA PIURA (estilo referencia) ===================== -->
+<!-- ===================== SOBRE CAJA PIURA ===================== -->
 <section class="section" id="nosotros">
     <div class="container">
-        <div class="about-band">
-            <span class="pill-label">📌 Sobre Caja Piura</span>
-            <h2>Ayudando a las familias del norte del país a crecer con confianza</h2>
-            <p class="lead">Creemos que el buen servicio financiero empieza por escuchar. Nuestro objetivo es ayudar a nuestros clientes a alcanzar sus metas, sin importar la distancia a la agencia más cercana.</p>
-            <a href="/pre-evaluacion" class="btn btn-dark">Empezar mi pre-evaluación</a>
-
-            <div class="about-stats">
-                <div><span class="num">44+</span><span class="label">Años de experiencia</span></div>
-                <div><span class="num">140+</span><span class="label">Agencias en el norte</span></div>
-                <div><span class="num">56%</span><span class="label">Operaciones digitales</span></div>
-                <div><span class="num">1:1</span><span class="label">Atención personalizada</span></div>
+        <div class="about-grid">
+            <div class="reveal-left">
+                <span class="section-kicker">Sobre Caja Piura</span>
+                <h2>Ayudando a las familias del norte del país a crecer con confianza</h2>
+                <p class="lead">Creemos que el buen servicio financiero empieza por escuchar. Nuestro objetivo es ayudar a nuestros clientes a alcanzar sus metas, sin importar la distancia a la agencia más cercana.</p>
+                <div class="about-stats">
+                    <div><span class="num" data-count="44" data-suffix="+">44+</span><span class="label">Años de experiencia</span></div>
+                    <div><span class="num" data-count="140" data-suffix="+">140+</span><span class="label">Agencias en el norte</span></div>
+                    <div><span class="num" data-count="56" data-suffix="%">56%</span><span class="label">Operaciones digitales</span></div>
+                    <div><span class="num">1:1</span><span class="label">Atención personalizada</span></div>
+                </div>
+                <div style="margin-top:30px;"><a href="/pre-evaluacion" class="btn btn-dark">Empezar mi pre-evaluación <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+            </div>
+            <div class="collage reveal-right">
+                <div class="ph p1"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=70" alt="Asesora financiera sonriendo" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" /></div>
+                <div class="ph p2"><img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=700&q=70" alt="Análisis de finanzas con calculadora" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" /></div>
+                <div class="ph p3"><img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=800&q=70" alt="Equipo de trabajo en oficina" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" /></div>
+                <div class="badge-float"><b><svg style="width:22px;height:22px;vertical-align:-3px;margin-right:6px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg>56%</b><span>de operaciones ya son digitales</span></div>
             </div>
         </div>
     </div>
 </section>
+
+<div class="ribbon" aria-hidden="true">
+    <div class="ribbon-track">
+        <span>Confianza</span><span>Inclusión financiera</span><span>Atención cercana</span><span>Innovación</span><span>Crecimiento del norte</span><span>Transparencia</span>
+        <span>Confianza</span><span>Inclusión financiera</span><span>Atención cercana</span><span>Innovación</span><span>Crecimiento del norte</span><span>Transparencia</span>
+    </div>
+</div>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 

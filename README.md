@@ -121,11 +121,17 @@ La aplicación queda disponible en `http://localhost:8080`.
 
 ### Cuentas de demostración (panel del asesor)
 
-| Usuario | Contraseña | Rol |
+Las contraseñas **no se publican en el repositorio**. Se leen de variables de entorno:
+
+| Usuario | Variable con la contraseña | Rol |
 |---|---|---|
-| `rpena` | `asesor123` | Asesor de negocios |
-| `jtimana` | `asesor123` | Asesor de negocios |
-| `admin` | `cajapiura2026` | Administrador (incluye acceso a `/h2-console`) |
+| `rpena`, `jtimana` | `SEED_ASESOR_PASSWORD` | Asesor de negocios |
+| `admin` | `SEED_ADMIN_PASSWORD` | Administrador |
+
+Si no se definen, la aplicación genera contraseñas aleatorias al primer arranque y las
+muestra una sola vez en el log (en Render: pestaña *Logs*; con `render.yaml` se generan
+como variables de entorno visibles en el panel). La consola H2 (`/h2-console`) está
+desactivada; para desarrollo local, arrancar con `H2_CONSOLE=true`.
 
 ## Ejecutar con Docker
 
@@ -206,4 +212,3 @@ mvn test
 ## Licencia / uso
 
 Proyecto con fines académicos para el curso de Herramientas de Desarrollo.
-probando CD

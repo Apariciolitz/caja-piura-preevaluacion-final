@@ -70,7 +70,7 @@
                     <div class="field-file" onclick="document.getElementById('documentoDni').click()">
                         <input type="file" name="documentoDni" id="documentoDni" accept=".pdf,.jpg,.jpeg,.png"
                                style="display:none" onchange="marcarArchivo(this,'labelDni')" />
-                        <span id="labelDni">📎 Adjuntar DNI</span>
+                        <span id="labelDni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5l-8.6 8.6a5.5 5.5 0 01-7.8-7.8l8.6-8.6a3.7 3.7 0 015.2 5.2l-8.6 8.6a1.8 1.8 0 01-2.6-2.6l7.9-7.9"/></svg>Adjuntar DNI</span>
                     </div>
                 </div>
 
@@ -79,8 +79,12 @@
                     <div class="field-file" onclick="document.getElementById('documentoSustento').click()">
                         <input type="file" name="documentoSustento" id="documentoSustento" accept=".pdf,.jpg,.jpeg,.png"
                                style="display:none" onchange="marcarArchivo(this,'labelSustento')" />
-                        <span id="labelSustento">📎 Adjuntar sustento de ingresos</span>
+                        <span id="labelSustento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5l-8.6 8.6a5.5 5.5 0 01-7.8-7.8l8.6-8.6a3.7 3.7 0 015.2 5.2l-8.6 8.6a1.8 1.8 0 01-2.6-2.6l7.9-7.9"/></svg>Adjuntar sustento de ingresos</span>
                     </div>
+                </div>
+
+                <div class="field full" th:if="${errorDocumentos}">
+                    <div class="error-msg" th:text="${errorDocumentos}"></div>
                 </div>
 
                 <div class="field full">
@@ -101,7 +105,7 @@
         const label = document.getElementById(labelId);
         const contenedor = input.closest('.field-file');
         if (input.files && input.files.length > 0) {
-            label.textContent = '✅ ' + input.files[0].name;
+            label.textContent = 'Archivo listo: ' + input.files[0].name;
             contenedor.classList.add('has-file');
         } else {
             contenedor.classList.remove('has-file');
