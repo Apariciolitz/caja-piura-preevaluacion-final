@@ -115,8 +115,16 @@ public class AsesorController {
 
     @GetMapping("/kanban")
     public String kanban(Model model) {
-        model.addAttribute("solicitudes", service.listarTodas());
+        var solicitudes = service.listarTodas();
+        // Conteo por columna calculado aquí: la expresión de filtro en la plantilla no veía la variable de la columna.
+        var conteos = new java.util.EnumMap<EstadoSolicitud, Long>(EstadoSolicitud.class);
+        for (EstadoSolicitud e : EstadoSolicitud.values()) {
+            conteos.put(e, 0L);
+        }
+        solicitudes.forEach(s -> conteos.merge(s.getEstado(), 1L, Long::sum));
+        model.addAttribute("solicitudes", solicitudes);
         model.addAttribute("estados", EstadoSolicitud.values());
+        model.addAttribute("conteos", conteos);
         return "asesor/kanban";
     }
 }

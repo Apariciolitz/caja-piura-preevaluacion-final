@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Auditoría')}"></head>
+<body>
+<div class="panel-shell">
+    <aside th:replace="~{fragments/admin-sidebar :: sidebar(${activo})}"></aside>
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Consola de administración</span>
+                <h2 style="margin:0;">Bitácora de auditoría</h2>
+            </div>
+        </div>
+        <form class="filter-bar" method="get" th:action="@{/admin/auditoria}">
+            <div class="field">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" name="usuario" th:value="${filtroUsuario}" />
+            </div>
+            <div class="field">
+                <label for="accion">Acción</label>
+                <select id="accion" name="accion">
+                    <option value="">Todas</option>
+                    <option th:each="a : ${acciones}" th:value="${a}" th:text="${a.etiqueta}" th:selected="${a == filtroAccion}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
+            <a href="/admin/auditoria" class="btn btn-outline btn-sm">Limpiar</a>
+        </form>
+        <p class="text-muted" style="font-size:.82rem;" th:text="'Se muestran los últimos 500 eventos. Coincidencias: ' + ${#lists.size(eventos)}">0</p>
+        <div class="scroll-x">
+        <table class="data-table">
+            <thead><tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Objeto</th><th>Detalle</th></tr></thead>
+            <tbody>
+            <tr th:each="e : ${eventos}">
+                <td class="text-muted" th:text="${#temporals.format(e.fecha, 'dd/MM/yyyy HH:mm:ss')}">fecha</td>
+                <td class="mono" th:text="${e.usuario}">usuario</td>
+                <td><span class="chip" th:classappend="${e.accion.name() == 'LOGIN_FALLIDO'} ? 'review' : 'neutral'" th:text="${e.accion.etiqueta}">accion</span></td>
+                <td class="mono" th:text="${e.entidad}">objeto</td>
+                <td th:text="${e.detalle}">detalle</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(eventos)}"><td colspan="5" class="text-center text-muted" style="padding:32px;">No hay eventos con estos filtros.</td></tr>
+            </tbody>
+        </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

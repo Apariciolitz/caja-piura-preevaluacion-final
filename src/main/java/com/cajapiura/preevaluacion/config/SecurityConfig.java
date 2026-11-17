@@ -1,5 +1,7 @@
 package com.cajapiura.preevaluacion.config;
 
+import com.cajapiura.preevaluacion.model.AccionAuditoria;
+import com.cajapiura.preevaluacion.service.AuditoriaService;
 import com.cajapiura.preevaluacion.service.UsuarioDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,9 +39,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuditoriaService auditoria) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/asesor/**").hasRole("ASESOR")
                 .requestMatchers("/h2-console/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
@@ -48,7 +51,20 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/asesor/login")
                 .loginProcessingUrl("/asesor/login")
-                .defaultSuccessUrl("/asesor", true)
+                // El administrador entra a su consola; el asesor, a su panel. Ambos quedan en la bitácora.
+                .successHandler((request, response, authentication) -> {
+                    auditoria.registrar(authentication.getName(), AccionAuditoria.LOGIN_OK, "sesión",
+                            "IP " + ipCliente(request));
+                    boolean admin = authentication.getAuthorities().stream()
+                            .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
+                    response.sendRedirect(request.getContextPath() + (admin ? "/admin" : "/asesor"));
+                })
+                .failureHandler((request, response, exception) -> {
+                    String intento = request.getParameter("username");
+                    auditoria.registrar(intento, AccionAuditoria.LOGIN_FALLIDO, "sesión",
+                            "IP " + ipCliente(request));
+                    response.sendRedirect(request.getContextPath() + "/asesor/login?error");
+                })
                 .permitAll()
             )
             .logout(logout -> logout
@@ -60,5 +76,14 @@ public class SecurityConfig {
             .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();
+    }
+
+    /** Detrás del proxy de Render la IP real llega en X-Forwarded-For. */
+    private static String ipCliente(jakarta.servlet.http.HttpServletRequest request) {
+        String reenviada = request.getHeader("X-Forwarded-For");
+        if (reenviada != null && !reenviada.isBlank()) {
+            return reenviada.split(",")[0].trim();
+        }
+        return request.getRemoteAddr();
     }
 }

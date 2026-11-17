@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Base de datos')}"></head>
+<body>
+<div class="panel-shell">
+    <aside th:replace="~{fragments/admin-sidebar :: sidebar(${activo})}"></aside>
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Consola de administración</span>
+                <h2 style="margin:0;">Base de datos</h2>
+            </div>
+            <span class="chip info" th:text="${motor}">H2</span>
+        </div>
+        <div th:if="${error}" class="alert err" th:text="${error}">Error</div>
+        <div class="db-note">Acceso de <strong>solo lectura</strong>. Las contraseñas (hash) se muestran ocultas y cada consulta o exportación queda registrada en la auditoría.</div>
+        <div class="scroll-x">
+        <table class="data-table">
+            <thead><tr><th>Tabla</th><th>Filas</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="t : ${tablas}">
+                <td class="mono" th:text="${t.nombre}">tabla</td>
+                <td th:text="${t.filas}">0</td>
+                <td>
+                    <a th:href="@{'/admin/base-datos/' + ${t.nombre}}" class="btn btn-dark btn-xs">Explorar</a>
+                    <a th:href="@{'/admin/base-datos/' + ${t.nombre} + '/exportar'}" class="btn btn-outline btn-xs">CSV</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <div class="admin-card" style="margin-top:24px;" th:if="${consolaH2}">
+            <h3>Consola H2 (avanzada)</h3>
+            <p class="text-muted">La consola SQL de H2 está habilitada en este entorno. Permite escribir consultas; úsala con cuidado.</p>
+            <a href="/h2-console" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Abrir consola H2</a>
+        </div>
+        <p class="text-muted" style="font-size:.82rem; margin-top:18px;" th:unless="${consolaH2}">La consola SQL de H2 está desactivada por seguridad. Para habilitarla en un entorno de desarrollo, define la variable H2_CONSOLE=true.</p>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Parámetros del sistema')}"></head>
+<body>
+<div class="panel-shell">
+    <aside th:replace="~{fragments/admin-sidebar :: sidebar(${activo})}"></aside>
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Consola de administración</span>
+                <h2 style="margin:0;">Parámetros de negocio</h2>
+            </div>
+        </div>
+        <div th:if="${mensaje}" class="alert ok" th:text="${mensaje}">Mensaje</div>
+        <div th:if="${error}" class="alert err" th:text="${error}">Error</div>
+        <p class="text-muted" style="max-width:720px;">Estos valores controlan la regla de pre-evaluación y los límites del simulador. Los cambios se aplican a las <strong>nuevas</strong> solicitudes; las ya evaluadas conservan su resultado. Cada cambio queda en la auditoría.</p>
+        <form method="post" th:action="@{/admin/parametros}">
+            <div class="param-grid">
+                <div class="field" th:each="p : ${parametros}">
+                    <label th:for="${p.clave}" th:text="${p.descripcion}">Descripción</label>
+                    <input type="text" inputmode="decimal" th:id="${p.clave}" th:name="${p.clave}" th:value="${p.valor}" required />
+                    <div class="hint" th:text="'Clave: ' + ${p.clave} + (${p.actualizadoPor} != null ? ' · última edición: ' + ${p.actualizadoPor} + ' ' + ${#temporals.format(p.actualizado, 'dd/MM/yyyy HH:mm')} : '')">clave</div>
+                </div>
+            </div>
+            <p style="margin-top:22px;"><button type="submit" class="btn btn-primary">Guardar parámetros</button></p>
+        </form>
+    </main>
+</div>
+</body>
+</html>

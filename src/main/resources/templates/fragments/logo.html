@@ -1,0 +1,8 @@
+<!-- Logotipo reutilizable: marca (C con moneda) + nombre + descriptor. Archivos fuente en /img/logo*.svg -->
+<a th:fragment="logo(href, oscuro)" th:href="${href}" class="logo" th:classappend="${oscuro} ? 'logo-light'" aria-label="Caja Piura, inicio">
+    <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F6B5B"/><stop offset="1" stop-color="#051F20"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#cpg)"/><path d="M33 15.2A12.5 12.5 0 1 0 33 32.8" fill="none" stroke="#DAF1DE" stroke-width="5" stroke-linecap="round"/><circle cx="34.5" cy="24" r="3.6" fill="#E3B04B"/></svg>
+    <span class="logo-text">
+        <span class="logo-name">Caja Piura</span>
+        <span class="logo-sub">Pre-evaluación digital</span>
+    </span>
+</a>

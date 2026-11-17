@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Consola de administración')}"></head>
+<body>
+<div class="panel-shell">
+    <aside th:replace="~{fragments/admin-sidebar :: sidebar(${activo})}"></aside>
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker">Consola de administración</span>
+                <h2 style="margin:0;">Resumen general y KPIs</h2>
+            </div>
+            <span class="text-muted" th:if="${usuarioActual != null}" th:text="'Sesión: ' + ${usuarioActual.nombreCompleto}">Sesión</span>
+        </div>
+
+        <div class="kpi-row six">
+            <div class="kpi-card"><span class="num" th:text="${kpi.total}">0</span><span class="label">Solicitudes totales</span></div>
+            <div class="kpi-card"><span class="num" th:text="${kpi.tasaPrecalificacion} + '%'">0%</span><span class="label">Tasa de pre-calificación</span></div>
+            <div class="kpi-card"><span class="num" th:text="${kpi.tasaCierre} + '%'">0%</span><span class="label">Casos cerrados</span></div>
+            <div class="kpi-card"><span class="num" th:text="${kpi.pendientes}">0</span><span class="label">Pendientes de atención</span></div>
+            <div class="kpi-card" th:classappend="${kpi.estancadas > 0} ? 'warn'"><span class="num" th:text="${kpi.estancadas}">0</span><span class="label" th:text="'Pendientes hace más de ' + ${diasEstancada} + ' días'">Estancadas</span></div>
+            <div class="kpi-card" th:classappend="${kpi.sinAsesor > 0} ? 'warn'"><span class="num" th:text="${kpi.sinAsesor}">0</span><span class="label">Sin asesor asignado</span></div>
+        </div>
+
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h3>Rendimiento por asesor</h3>
+                <div class="scroll-x">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>Asesor</th><th>Asignadas</th><th>Activas</th><th>Cerradas</th><th>Pre-calif.</th><th>En revisión</th><th>Monto gestionado</th><th>Tasa de cierre</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="k : ${kpisAsesor}">
+                        <td>
+                            <span th:text="${k.nombre}">Asesor</span>
+                            <span th:unless="${k.activo}" class="chip neutral" style="margin-left:6px;">Inactivo</span>
+                        </td>
+                        <td th:text="${k.asignadas}">0</td>
+                        <td th:text="${k.activas}">0</td>
+                        <td th:text="${k.cerradas}">0</td>
+                        <td th:text="${k.precalificadas}">0</td>
+                        <td th:text="${k.enRevision}">0</td>
+                        <td th:text="'S/ ' + ${#numbers.formatDecimal(k.montoGestionado,1,'COMMA',0,'POINT')}">S/ 0</td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <div class="bar-track"><div class="bar-fill" th:style="'width:' + ${k.tasaCierre} + '%'"></div></div>
+                                <span th:text="${k.tasaCierre} + '%'">0%</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(kpisAsesor)}"><td colspan="8" class="text-center text-muted" style="padding:24px;">Sin usuarios registrados.</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3>Cartera</h3>
+                <p class="text-muted" style="margin:0 0 6px;">Monto total solicitado</p>
+                <div style="font-family:var(--font-serif); font-size:1.7rem; font-weight:800;" th:text="'S/ ' + ${#numbers.formatDecimal(kpi.montoTotal,1,'COMMA',0,'POINT')}">S/ 0</div>
+                <p class="text-muted" style="margin:14px 0 6px;">Monto promedio por solicitud</p>
+                <div style="font-family:var(--font-serif); font-size:1.3rem; font-weight:700;" th:text="'S/ ' + ${#numbers.formatDecimal(kpi.montoPromedio,1,'COMMA',0,'POINT')}">S/ 0</div>
+                <p class="text-muted" style="margin:14px 0 6px;">Pre-calificadas / Requieren revisión</p>
+                <div><span class="chip ok" th:text="${kpi.precalificadas}">0</span> <span class="chip review" th:text="${kpi.enRevision}">0</span></div>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <h3>Actividad reciente</h3>
+            <table class="data-table">
+                <thead><tr><th>Fecha</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr></thead>
+                <tbody>
+                <tr th:each="e : ${ultimosEventos}">
+                    <td class="text-muted" th:text="${#temporals.format(e.fecha, 'dd/MM/yyyy HH:mm')}">fecha</td>
+                    <td th:text="${e.usuario}">usuario</td>
+                    <td><span class="chip neutral" th:text="${e.accion.etiqueta}">accion</span></td>
+                    <td th:text="${e.entidad} + (${e.detalle} != null ? ' · ' + ${e.detalle} : '')">detalle</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(ultimosEventos)}"><td colspan="4" class="text-center text-muted" style="padding:24px;">Aún no hay actividad registrada.</td></tr>
+                </tbody>
+            </table>
+            <p style="margin:14px 0 0;"><a href="/admin/auditoria" class="btn btn-outline btn-sm">Ver toda la auditoría</a></p>
+        </div>
+    </main>
+</div>
+</body>
+</html>

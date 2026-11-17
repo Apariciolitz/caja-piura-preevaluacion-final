@@ -705,3 +705,51 @@ footer .footer-links a:hover { color: var(--gold); }
     .collage { height: 380px; }
     .float-chip { display: none; }
 }
+
+/* ===== Logotipo ===== */
+.logo { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; line-height: 1; }
+.logo-mark { width: 40px; height: 40px; flex-shrink: 0; transition: transform .3s ease; filter: drop-shadow(0 4px 10px rgba(5,31,32,.22)); }
+.logo:hover .logo-mark { transform: rotate(-8deg) scale(1.06); }
+.logo-text { display: flex; flex-direction: column; gap: 3px; }
+.logo-name { font-family: var(--font-serif); font-weight: 800; font-size: 1.28rem; color: var(--ink); letter-spacing: -.01em; }
+.logo-sub { font-size: .6rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--pine); }
+.logo-light .logo-name { color: #fff; }
+.logo-light .logo-sub { color: var(--sage); }
+.panel-sidebar .logo { margin-bottom: 36px; }
+.login-logo { display: flex; justify-content: center; }
+@media (max-width: 520px) { .logo-sub { display: none; } }
+
+/* ===== Consola de administración ===== */
+.admin-tag { display: inline-block; margin: 0 0 20px 4px; padding: 3px 10px; border-radius: 999px; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: var(--gold); color: var(--ink); }
+.nav-sep { margin: 18px 14px 6px; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sage); opacity: .8; }
+.alert { padding: 13px 18px; border-radius: 12px; margin-bottom: 20px; font-size: .92rem; }
+.alert.ok { background: var(--mint); color: var(--forest); border: 1px solid var(--sage); }
+.alert.err { background: var(--red-light); color: var(--red); border: 1px solid var(--red); }
+.pw-box { background: var(--ink); color: #fff; border-radius: 14px; padding: 18px 22px; margin-bottom: 22px; }
+.pw-box code { display: inline-block; margin: 8px 0; padding: 8px 14px; background: rgba(255,255,255,.1); border-radius: 8px; font-size: 1.15rem; letter-spacing: .08em; color: var(--gold); user-select: all; }
+.pw-box small { display: block; color: var(--sage); }
+.admin-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 22px; margin-bottom: 26px; }
+.admin-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+.admin-card h3 { margin: 0 0 14px; font-size: 1.05rem; }
+.kpi-row.six { grid-template-columns: repeat(6, 1fr); }
+.kpi-card.warn .num { color: var(--red); }
+.bar-track { height: 8px; border-radius: 99px; background: var(--cream-2); overflow: hidden; min-width: 90px; }
+.bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--sage), var(--pine)); }
+.inline-form { display: inline; }
+.inline-form select { padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); font-size: .82rem; }
+.btn-xs { padding: 6px 12px; font-size: .78rem; border-radius: 8px; }
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; align-items: end; }
+.form-row .field { margin-bottom: 0; }
+.param-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.param-grid .field { margin-bottom: 0; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem; }
+.scroll-x { overflow-x: auto; }
+.pager { display: flex; gap: 10px; align-items: center; margin: 16px 0; }
+.chip.warn { background: #FBEFD2; color: #8A6410; }
+.db-note { background: var(--mint); border: 1px solid var(--sage); color: var(--forest); border-radius: 12px; padding: 12px 18px; margin-bottom: 20px; font-size: .88rem; }
+@media (max-width: 1100px) { .admin-grid { grid-template-columns: 1fr; } .kpi-row.six { grid-template-columns: repeat(3, 1fr); } }
+.kpi-card .num, .kpi-card .label { display: block; }
+.admin-grid { grid-template-columns: minmax(0, 1.7fr) minmax(220px, 1fr); }
+.panel-sidebar .logo-sub { letter-spacing: .08em; font-size: .55rem; white-space: nowrap; }
+.panel-sidebar .logo-name { font-size: 1.2rem; }
+@media (max-width: 1100px) { .admin-grid { grid-template-columns: 1fr; } }

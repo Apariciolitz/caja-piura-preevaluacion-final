@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(${'Tabla ' + datos.tabla})}"></head>
+<body>
+<div class="panel-shell">
+    <aside th:replace="~{fragments/admin-sidebar :: sidebar(${activo})}"></aside>
+    <main class="panel-main">
+        <div class="panel-header">
+            <div>
+                <span class="section-kicker"><a href="/admin/base-datos">Base de datos</a> / tabla</span>
+                <h2 style="margin:0;" class="mono" th:text="${datos.tabla}">tabla</h2>
+            </div>
+            <a th:href="@{'/admin/base-datos/' + ${datos.tabla} + '/exportar'}" class="btn btn-outline btn-sm">Exportar CSV</a>
+        </div>
+        <div class="db-note" th:text="'Solo lectura · ' + ${datos.total} + ' fila(s) · columnas sensibles ocultas'">info</div>
+
+        <div class="admin-card" style="margin-bottom:20px;">
+            <h3>Estructura</h3>
+            <div class="scroll-x">
+            <table class="data-table">
+                <thead><tr><th>Columna</th><th>Tipo</th><th>Nulo</th><th>Clave primaria</th></tr></thead>
+                <tbody>
+                <tr th:each="c : ${datos.columnas}">
+                    <td class="mono" th:text="${c.nombre}">col</td>
+                    <td th:text="${c.tipo}">tipo</td>
+                    <td th:text="${c.nulable} ? 'sí' : 'no'">sí</td>
+                    <td th:text="${c.clavePrimaria} ? 'PK' : ''">PK</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <div class="scroll-x">
+        <table class="data-table">
+            <thead><tr><th th:each="h : ${datos.encabezados}" th:text="${h}">col</th></tr></thead>
+            <tbody>
+            <tr th:each="fila : ${datos.filas}">
+                <td th:each="celda : ${fila}" class="mono" th:text="${celda}">valor</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(datos.filas)}"><td th:colspan="${#lists.size(datos.encabezados) + 1}" class="text-center text-muted" style="padding:28px;">La tabla está vacía.</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div class="pager">
+            <a th:if="${datos.hayAnterior}" th:href="@{'/admin/base-datos/' + ${datos.tabla}(pagina=${datos.pagina - 1})}" class="btn btn-outline btn-sm">← Anterior</a>
+            <span class="text-muted" th:text="'Página ' + ${datos.pagina} + ' de ' + ${datos.totalPaginas}">Página 1 de 1</span>
+            <a th:if="${datos.haySiguiente}" th:href="@{'/admin/base-datos/' + ${datos.tabla}(pagina=${datos.pagina + 1})}" class="btn btn-outline btn-sm">Siguiente →</a>
+        </div>
+    </main>
+</div>
+</body>
+</html>

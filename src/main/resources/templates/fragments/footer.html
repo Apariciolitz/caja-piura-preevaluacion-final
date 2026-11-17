@@ -1,10 +1,7 @@
 <footer th:fragment="footer">
     <div class="container">
         <div class="footer-inner">
-            <a href="/" class="brand">
-                <span class="brand-mark">CP</span>
-                Caja Piura
-            </a>
+            <a th:replace="~{fragments/logo :: logo('/', true)}"></a>
             <div class="footer-links">
                 <a href="/#como-funciona">Cómo funciona</a>
                 <a href="/simulador">Simulador de crédito</a>

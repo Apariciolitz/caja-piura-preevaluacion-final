@@ -5,6 +5,7 @@ import com.cajapiura.preevaluacion.repository.ComentarioSolicitudRepository;
 import com.cajapiura.preevaluacion.repository.HistorialEstadoRepository;
 import com.cajapiura.preevaluacion.repository.SolicitudCreditoRepository;
 import com.cajapiura.preevaluacion.repository.UsuarioRepository;
+import com.cajapiura.preevaluacion.service.ParametroService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ public class DataSeeder implements CommandLineRunner {
     private final HistorialEstadoRepository historialRepository;
     private final ComentarioSolicitudRepository comentarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ParametroService parametroService;
     private final String passwordAdmin;
     private final String passwordAsesores;
 
@@ -41,6 +43,7 @@ public class DataSeeder implements CommandLineRunner {
                        HistorialEstadoRepository historialRepository,
                        ComentarioSolicitudRepository comentarioRepository,
                        PasswordEncoder passwordEncoder,
+                       ParametroService parametroService,
                        @Value("${app.seed.admin-password:}") String passwordAdmin,
                        @Value("${app.seed.asesor-password:}") String passwordAsesores) {
         this.solicitudRepository = solicitudRepository;
@@ -48,6 +51,7 @@ public class DataSeeder implements CommandLineRunner {
         this.historialRepository = historialRepository;
         this.comentarioRepository = comentarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.parametroService = parametroService;
         // INC-01: ya no hay contraseñas fijas en el código ni en el README. Se leen de variables
         // de entorno; si no están definidas, se genera una aleatoria y se muestra una sola vez en el log.
         this.passwordAdmin = definirPassword(passwordAdmin, "admin");
@@ -68,6 +72,7 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        parametroService.asegurarPorDefecto();
         if (usuarioRepository.count() == 0) {
             sembrarUsuarios();
         }

@@ -24,26 +24,34 @@ public class PreEvaluacionService {
     private final HistorialEstadoRepository historialRepository;
     private final ComentarioSolicitudRepository comentarioRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ParametroService parametros;
+    private final AuditoriaService auditoria;
 
     public PreEvaluacionService(SolicitudCreditoRepository repository,
                                  HistorialEstadoRepository historialRepository,
                                  ComentarioSolicitudRepository comentarioRepository,
-                                 UsuarioRepository usuarioRepository) {
+                                 UsuarioRepository usuarioRepository,
+                                 ParametroService parametros,
+                                 AuditoriaService auditoria) {
         this.repository = repository;
         this.historialRepository = historialRepository;
         this.comentarioRepository = comentarioRepository;
         this.usuarioRepository = usuarioRepository;
+        this.parametros = parametros;
+        this.auditoria = auditoria;
     }
 
     /** Evalua y persiste una nueva solicitud. Asigna automáticamente al asesor con menos casos activos. */
     public SolicitudCredito evaluarYGuardar(SolicitudCredito solicitud) {
-        solicitud.evaluar();
+        solicitud.evaluar(parametros.ratioLimite());
         solicitud.setAsesorAsignado(asesorConMenosCargaActual());
         SolicitudCredito guardada = repository.save(solicitud);
 
         HistorialEstado inicio = new HistorialEstado(guardada, null, guardada.getEstado(),
                 null, "Solicitud creada desde la pre-evaluación web");
         historialRepository.save(inicio);
+        auditoria.registrar("sistema", AccionAuditoria.SOLICITUD_CREADA, "solicitud:" + guardada.getId(),
+                "Resultado " + guardada.getResultado().getEtiqueta() + ", ratio " + guardada.getRatio());
 
         return guardada;
     }
@@ -114,8 +122,12 @@ public class PreEvaluacionService {
         if (notas != null && !notas.isBlank()) {
             solicitud.setNotasAsesor(notas);
         }
+        EstadoSolicitud anterior = solicitud.getEstado();
         registrarCambioEstado(solicitud, nuevoEstado, usuario, null);
-        return repository.save(solicitud);
+        SolicitudCredito guardada = repository.save(solicitud);
+        auditoria.registrar(usuario == null ? null : usuario.getUsername(), AccionAuditoria.CAMBIO_ESTADO,
+                "solicitud:" + id, anterior.getEtiqueta() + " → " + nuevoEstado.getEtiqueta());
+        return guardada;
     }
 
     /** Reasigna el caso, validando al nuevo asesor y dejando registro en el historial (INC-06). */
@@ -136,6 +148,8 @@ public class PreEvaluacionService {
                 + " a " + nuevoAsesor.getNombreCompleto();
         historialRepository.save(new HistorialEstado(guardada, guardada.getEstado(), guardada.getEstado(),
                 quienReasigna, detalle));
+        auditoria.registrar(quienReasigna == null ? null : quienReasigna.getUsername(), AccionAuditoria.REASIGNACION,
+                "solicitud:" + id, detalle);
         return guardada;
     }
 
