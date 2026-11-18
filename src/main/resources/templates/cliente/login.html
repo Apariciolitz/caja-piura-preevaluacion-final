@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Ingresar')}"></head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<section class="section-tight">
+    <div class="container-narrow" style="max-width:460px;">
+        <div class="section-head center" style="margin-left:auto;margin-right:auto;">
+            <span class="section-kicker">Portal del cliente</span>
+            <h2>Ingresa a tu cuenta</h2>
+            <p>Simula tu crédito y revisa el estado de tus solicitudes.</p>
+        </div>
+
+        <div class="form-card">
+            <div th:if="${registrado}" class="alert ok">Tu cuenta fue creada. Ya puedes ingresar.</div>
+            <div th:if="${acceso}" class="alert err">Esa zona es solo para clientes. Ingresa con tu cuenta de cliente. Si eres personal de Caja Piura, usa el acceso de colaboradores.</div>
+            <div th:if="${error}" class="alert err">Correo o contraseña incorrectos.</div>
+            <div th:if="${bloqueado}" class="alert err">Por seguridad, la cuenta se bloqueó temporalmente tras varios intentos fallidos. Inténtalo de nuevo en 15 minutos.</div>
+
+            <form th:action="@{/cliente/login}" method="post">
+                <div class="field">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" name="correo" autocomplete="username" placeholder="tucorreo@ejemplo.com" required />
+                </div>
+                <div class="field">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+            </form>
+            <p class="text-center text-muted" style="margin-top:18px;">¿Aún no tienes cuenta? <a href="/cliente/registro"><strong>Regístrate gratis</strong></a></p>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

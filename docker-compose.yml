@@ -1,0 +1,29 @@
+# Ejecuta TODO el proyecto con Docker (sin instalar Java ni Maven):
+#   1) cp .env.example .env      (y edita las contraseñas)
+#   2) docker compose up --build
+#   3) abre http://localhost:8080
+#
+# Portal del cliente:      http://localhost:8080/cliente/registro
+# Portal de colaboradores: http://localhost:8080/asesor/login   (admin / asesores)
+services:
+  caja-piura:
+    build: .
+    image: caja-piura/preevaluacion:latest
+    container_name: caja-piura
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      # Contraseñas iniciales del personal interno. Si se dejan vacías, la app genera
+      # una aleatoria y la muestra en el log (docker compose logs caja-piura).
+      SEED_ADMIN_PASSWORD: "${SEED_ADMIN_PASSWORD:-}"
+      SEED_ASESOR_PASSWORD: "${SEED_ASESOR_PASSWORD:-}"
+      H2_CONSOLE: "${H2_CONSOLE:-false}"
+      UPLOADS_DIR: /app/data/uploads
+    volumes:
+      # Volumen con nombre: la base de datos y los documentos sobreviven a reinicios del contenedor.
+      - caja-piura-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  caja-piura-data:

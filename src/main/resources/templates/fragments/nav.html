@@ -8,8 +8,17 @@
             <a href="/acerca-del-proyecto">Acerca del proyecto</a>
         </div>
         <div class="nav-actions">
-            <a href="/asesor" class="text-muted" style="font-size:0.85rem;">Portal del asesor</a>
-            <a href="/pre-evaluacion" class="btn btn-primary">Evaluar mi crédito</a>
+            <th:block th:if="${esCliente}">
+                <a href="/cliente" class="text-muted" style="font-size:0.9rem;">Mi cuenta</a>
+                <a href="/pre-evaluacion" class="btn btn-primary">Evaluar mi crédito</a>
+                <form th:action="@{/cliente/logout}" method="post" class="inline-form">
+                    <button type="submit" class="btn btn-outline btn-sm">Cerrar sesión</button>
+                </form>
+            </th:block>
+            <th:block th:unless="${esCliente}">
+                <a href="/cliente/login" class="text-muted" style="font-size:0.9rem;">Ingresar</a>
+                <a href="/cliente/registro" class="btn btn-primary">Crear cuenta</a>
+            </th:block>
         </div>
     </div>
 </nav>

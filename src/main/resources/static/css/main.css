@@ -753,3 +753,23 @@ footer .footer-links a:hover { color: var(--gold); }
 .panel-sidebar .logo-sub { letter-spacing: .08em; font-size: .55rem; white-space: nowrap; }
 .panel-sidebar .logo-name { font-size: 1.2rem; }
 @media (max-width: 1100px) { .admin-grid { grid-template-columns: 1fr; } }
+
+/* ===== Portal del cliente y portal de colaboradores ===== */
+.consent { display: grid; gap: 12px; margin: 6px 0 22px; padding: 16px; background: var(--cream-2); border-radius: 12px; }
+.consent label { display: flex; gap: 10px; align-items: flex-start; font-size: .84rem; color: var(--dark); line-height: 1.5; cursor: pointer; }
+.consent input[type=checkbox] { margin-top: 3px; width: 17px; height: 17px; flex-shrink: 0; accent-color: var(--pine); }
+.cliente-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.action-card { display: flex; flex-direction: column; gap: 6px; padding: 24px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); text-decoration: none; color: var(--dark); transition: transform .25s ease, box-shadow .25s ease; }
+.action-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(5,31,32,.12); }
+.action-card strong { font-family: var(--font-serif); font-size: 1.15rem; }
+.action-card span { font-size: .9rem; color: var(--text-muted); }
+.action-card.primary { background: var(--pine); border-color: var(--pine); color: #fff; }
+.action-card.primary span { color: var(--mint); }
+body.staff-login { background: var(--ink); }
+body.staff-login .form-card { border: 1px solid rgba(142,182,155,.25); }
+.staff-badge { display: block; width: max-content; margin: 0 auto 10px; padding: 3px 12px; border-radius: 999px; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; background: var(--gold); color: var(--ink); }
+body.staff-login .text-muted { color: var(--sage); }
+.footer-links .footer-staff { opacity: .6; font-size: .85rem; }
+.prose h3 { margin: 22px 0 6px; font-size: 1.05rem; }
+.prose p { margin: 0; color: var(--text-muted); line-height: 1.7; }
+.alert.ok, .alert.err { padding: 13px 18px; border-radius: 12px; margin-bottom: 18px; font-size: .9rem; }

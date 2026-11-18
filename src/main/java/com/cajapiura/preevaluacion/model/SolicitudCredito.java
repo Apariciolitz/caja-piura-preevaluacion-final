@@ -62,6 +62,11 @@ public class SolicitudCredito {
 
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
+    /** Cliente que registró la solicitud desde su cuenta (puede ser nulo en datos de ejemplo). */
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
     /**
      * Código público no adivinable (UUID) con el que el cliente accede a su
      * resultado, comprobante y cita. Reemplaza al ID secuencial en las URLs
@@ -267,4 +272,7 @@ public class SolicitudCredito {
     public void setAsesorAsignado(Usuario asesorAsignado) {
         this.asesorAsignado = asesorAsignado;
     }
+
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
 }
