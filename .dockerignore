@@ -1,0 +1,9 @@
+.git
+.github
+target
+data
+uploads
+*.md
+!README.md
+.vscode
+.idea

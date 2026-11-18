@@ -1,5 +1,6 @@
 package com.cajapiura.preevaluacion.repository;
 
+import com.cajapiura.preevaluacion.model.Cliente;
 import com.cajapiura.preevaluacion.model.EstadoSolicitud;
 import com.cajapiura.preevaluacion.model.ResultadoEvaluacion;
 import com.cajapiura.preevaluacion.model.SolicitudCredito;
@@ -16,6 +17,9 @@ public interface SolicitudCreditoRepository extends JpaRepository<SolicitudCredi
     List<SolicitudCredito> findByResultadoOrderByFechaCreacionDesc(ResultadoEvaluacion resultado);
 
     List<SolicitudCredito> findByEstadoOrderByFechaCreacionDesc(EstadoSolicitud estado);
+
+    /** Solicitudes de un cliente, para su panel personal. */
+    List<SolicitudCredito> findByClienteOrderByFechaCreacionDesc(Cliente cliente);
 
     Optional<SolicitudCredito> findByCodigoPublico(String codigoPublico);
 

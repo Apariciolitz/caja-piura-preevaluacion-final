@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Portal del asesor')}"></head>
-<body>
+<head th:replace="~{fragments/head :: head('Portal de colaboradores')}"></head>
+<body class="staff-login">
 
 <section class="section" style="min-height:100vh; display:flex; align-items:center;">
     <div class="container-narrow" style="max-width:420px;">
         <div class="text-center" style="margin-bottom:28px;">
-            <a th:replace="~{fragments/logo :: logo('/', false)}"></a>
+            <a th:replace="~{fragments/logo :: logo('/', true)}"></a>
         </div>
 
         <div class="form-card">
-            <h2 style="text-align:center; font-size:1.4rem;">Portal del asesor</h2>
-            <p class="text-muted text-center" style="margin-bottom:24px;">Acceso exclusivo para el equipo de asesores de negocio.</p>
+            <span class="staff-badge">Uso interno</span>
+            <h2 style="text-align:center; font-size:1.4rem;">Portal de colaboradores</h2>
+            <p class="text-muted text-center" style="margin-bottom:24px;">Acceso exclusivo para el personal autorizado de Caja Piura (asesores y administradores).</p>
 
             <div th:if="${error}" class="error-msg" style="background:var(--red-light); padding:12px 16px; border-radius:10px; margin-bottom:18px;">
                 Usuario o contraseña incorrectos.
@@ -29,12 +30,12 @@
                 <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
             </form>
             <div class="hint text-center" style="margin-top:16px; line-height:1.7;">
-                Acceso solo para el equipo de asesores de Caja Piura.
+                Las cuentas del personal las crea el administrador. Si eres cliente, ingresa por el portal del cliente.
             </div>
         </div>
 
         <p class="text-center" style="margin-top:20px;">
-            <a href="/" class="text-muted" style="font-size:0.88rem;">← Volver al sitio público</a>
+            <a href="/cliente/login" class="text-muted" style="font-size:0.88rem;">← Ir al portal del cliente</a>
         </p>
     </div>
 </section>

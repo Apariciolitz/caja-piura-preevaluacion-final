@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Mi cuenta')}"></head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<section class="section-tight">
+    <div class="container">
+        <div class="section-head">
+            <span class="section-kicker">Mi cuenta</span>
+            <h2 th:text="'Hola, ' + ${cliente.nombreCompleto}">Hola</h2>
+            <p>Desde aquí simulas tu crédito, envías tu pre-evaluación y sigues tus solicitudes.</p>
+        </div>
+
+        <div class="cliente-actions">
+            <a href="/simulador" class="action-card">
+                <strong>Simular mi crédito</strong>
+                <span>Calcula tu cuota mensual según monto, plazo y tasa.</span>
+            </a>
+            <a href="/pre-evaluacion" class="action-card primary">
+                <strong>Nueva pre-evaluación</strong>
+                <span>Obtén un resultado preliminar y agenda tu cita con un asesor.</span>
+            </a>
+        </div>
+
+        <h3 style="margin:36px 0 14px;">Mis solicitudes</h3>
+        <div class="scroll-x">
+        <table class="data-table">
+            <thead><tr><th>Fecha</th><th>Monto</th><th>Resultado</th><th>Estado</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="s : ${solicitudes}">
+                <td class="text-muted" th:text="${#temporals.format(s.fechaCreacion, 'dd/MM/yyyy HH:mm')}">fecha</td>
+                <td th:text="'S/ ' + ${#numbers.formatDecimal(s.montoSolicitado,1,'COMMA',0,'POINT')}">S/ 0</td>
+                <td><span class="chip" th:classappend="${s.resultado != null and s.resultado.name() == 'PRECALIFICADO'} ? 'ok' : 'review'" th:text="${s.resultado != null ? s.resultado.etiqueta : '—'}">Resultado</span></td>
+                <td><span class="chip neutral" th:text="${s.estado.etiqueta}">Estado</span></td>
+                <td><a th:href="@{'/resultado/' + ${s.codigoPublico}}" class="btn btn-outline btn-xs">Ver resultado</a></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(solicitudes)}"><td colspan="5" class="text-center text-muted" style="padding:28px;">Aún no tienes solicitudes. Empieza con tu primera pre-evaluación.</td></tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

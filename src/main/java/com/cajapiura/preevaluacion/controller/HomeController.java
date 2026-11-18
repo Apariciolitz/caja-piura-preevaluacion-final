@@ -13,4 +13,10 @@ public class HomeController {
         model.addAttribute("solicitud", new SolicitudCredito());
         return "landing";
     }
+
+    @GetMapping("/privacidad")
+    public String privacidad(Model model) {
+        model.addAttribute("version", com.cajapiura.preevaluacion.service.ClienteValidador.VERSION_TERMINOS);
+        return "privacidad";
+    }
 }

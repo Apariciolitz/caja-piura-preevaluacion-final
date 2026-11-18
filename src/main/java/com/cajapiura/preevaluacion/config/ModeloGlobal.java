@@ -13,4 +13,11 @@ public class ModeloGlobal {
         return authentication != null && authentication.isAuthenticated()
                 && authentication.getAuthorities().stream().anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
     }
+
+    /** Verdadero si hay un cliente con sesión iniciada (para mostrar "Mi cuenta" en el menú público). */
+    @ModelAttribute("esCliente")
+    public boolean esCliente(Authentication authentication) {
+        return authentication != null && authentication.isAuthenticated()
+                && authentication.getAuthorities().stream().anyMatch(a -> "ROLE_CLIENTE".equals(a.getAuthority()));
+    }
 }

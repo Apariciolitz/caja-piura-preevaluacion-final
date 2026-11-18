@@ -4,6 +4,9 @@ package com.cajapiura.preevaluacion.model;
 public enum AccionAuditoria {
     LOGIN_OK("Inicio de sesión"),
     LOGIN_FALLIDO("Intento de acceso fallido"),
+    CLIENTE_REGISTRADO("Cliente registrado"),
+    LOGIN_CLIENTE("Inicio de sesión de cliente"),
+    LOGIN_CLIENTE_FALLIDO("Acceso fallido de cliente"),
     SOLICITUD_CREADA("Solicitud creada"),
     CAMBIO_ESTADO("Cambio de estado"),
     REASIGNACION("Reasignación de solicitud"),

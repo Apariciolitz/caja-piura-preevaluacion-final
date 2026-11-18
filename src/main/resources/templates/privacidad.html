@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Privacidad y datos')}"></head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<section class="section-tight">
+    <div class="container-narrow" style="max-width:760px;">
+        <div class="section-head">
+            <span class="section-kicker">Privacidad y datos personales</span>
+            <h2>Cómo tratamos tus datos</h2>
+            <p>Versión <span th:text="${version}">2026-11</span>. Texto referencial de este prototipo académico: debe ser revisado por el área legal antes de un uso real.</p>
+        </div>
+        <div class="form-card prose">
+            <h3>Marco normativo</h3>
+            <p>El tratamiento de datos personales se rige por la Ley N.° 29733, Ley de Protección de Datos Personales, y su reglamento.</p>
+            <h3>Qué datos recogemos y para qué</h3>
+            <p>Nombre, correo electrónico, DNI, teléfono, ingresos y datos de tu solicitud, y los documentos que adjuntes. Los usamos solo para crear tu cuenta, calcular tu pre-evaluación y que un asesor pueda atender tu solicitud.</p>
+            <h3>Seguridad</h3>
+            <p>Tu contraseña se guarda cifrada (no podemos verla). Las cuentas se bloquean temporalmente tras varios intentos fallidos. El acceso del personal es nominal y queda registrado en una bitácora de auditoría.</p>
+            <h3>Tus derechos</h3>
+            <p>Puedes solicitar acceso, rectificación, cancelación y oposición respecto de tus datos. En este prototipo, la solicitud se hace por el canal de contacto del equipo del proyecto.</p>
+            <h3>Consentimiento</h3>
+            <p>Al registrarte guardamos la fecha en que autorizaste el tratamiento y la versión de este texto que aceptaste.</p>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

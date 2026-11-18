@@ -135,10 +135,36 @@ desactivada; para desarrollo local, arrancar con `H2_CONSOLE=true`.
 
 ## Ejecutar con Docker
 
+La aplicación se empaqueta en una imagen Docker en dos etapas: Maven compila y genera el `.jar`
+(etapa *build*) y una imagen ligera con solo Java lo ejecuta (etapa *runtime*). No hace falta tener
+Java ni Maven instalados.
+
+**Con Docker Compose (recomendado):**
+
+```bash
+cp .env.example .env          # en Windows: copy .env.example .env  (y edita las contraseñas)
+docker compose up --build
+```
+
+Abrir <http://localhost:8080>. Los datos se guardan en el volumen `caja-piura-data`, así que
+sobreviven a `docker compose down` (se borran solo con `docker compose down -v`).
+
+**Solo con Docker:**
+
 ```bash
 docker build -t caja-piura-preevaluacion .
-docker run -p 8080:8080 caja-piura-preevaluacion
+docker run -p 8080:8080 -v caja-piura-data:/app/data caja-piura-preevaluacion
 ```
+
+## Dos portales
+
+| Portal | Quién | Dirección |
+|---|---|---|
+| Cliente | Cualquier persona: se registra con correo y contraseña, simula su crédito y envía su pre-evaluación | `/cliente/registro`, `/cliente/login` |
+| Colaboradores | Solo personal de Caja Piura (asesores y administradores; cuentas creadas por el administrador) | `/asesor/login` (también `/colaboradores`) |
+
+Son cuentas y sesiones independientes: un cliente no puede entrar a `/asesor` ni `/admin`, y el personal
+no usa el simulador desde su cuenta interna.
 
 ## Despliegue en línea (Render, gratuito)
 
