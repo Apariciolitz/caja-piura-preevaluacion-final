@@ -1,29 +1,56 @@
-# Ejecuta TODO el proyecto con Docker (sin instalar Java ni Maven):
-#   1) cp .env.example .env      (y edita las contraseñas)
+# Ejecuta TODO el proyecto con Docker (sin instalar Java, Maven ni PostgreSQL):
+#   1) cp .env.example .env      (en Windows: copy .env.example .env; y edita las contraseñas)
 #   2) docker compose up --build
 #   3) abre http://localhost:8080
 #
 # Portal del cliente:      http://localhost:8080/cliente/registro
 # Portal de colaboradores: http://localhost:8080/asesor/login   (admin / asesores)
+#
+# Servicios: "db" (PostgreSQL 16) y "caja-piura" (la aplicación Spring Boot).
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: caja-piura-db
+    environment:
+      POSTGRES_DB: cajapiura
+      POSTGRES_USER: cajapiura
+      POSTGRES_PASSWORD: "${DB_PASSWORD:?Define DB_PASSWORD en el archivo .env}"
+    volumes:
+      # Los datos sobreviven a reinicios y a "docker compose down" (solo se borran con "down -v").
+      - caja-piura-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cajapiura -d cajapiura"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    # Sin "ports": la base solo es accesible desde la app, no desde fuera del contenedor.
+
   caja-piura:
     build: .
     image: caja-piura/preevaluacion:latest
     container_name: caja-piura
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "8080:8080"
     environment:
       PORT: "8080"
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_URL: jdbc:postgresql://db:5432/cajapiura
+      DB_USER: cajapiura
+      DB_PASSWORD: "${DB_PASSWORD}"
       # Contraseñas iniciales del personal interno. Si se dejan vacías, la app genera
       # una aleatoria y la muestra en el log (docker compose logs caja-piura).
       SEED_ADMIN_PASSWORD: "${SEED_ADMIN_PASSWORD:-}"
       SEED_ASESOR_PASSWORD: "${SEED_ASESOR_PASSWORD:-}"
-      H2_CONSOLE: "${H2_CONSOLE:-false}"
       UPLOADS_DIR: /app/data/uploads
     volumes:
-      # Volumen con nombre: la base de datos y los documentos sobreviven a reinicios del contenedor.
+      # Documentos adjuntos (DNI, sustento de ingresos).
       - caja-piura-data:/app/data
     restart: unless-stopped
 
 volumes:
+  caja-piura-pgdata:
   caja-piura-data:

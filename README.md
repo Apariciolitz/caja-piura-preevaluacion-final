@@ -146,8 +146,10 @@ cp .env.example .env          # en Windows: copy .env.example .env  (y edita las
 docker compose up --build
 ```
 
-Abrir <http://localhost:8080>. Los datos se guardan en el volumen `caja-piura-data`, así que
-sobreviven a `docker compose down` (se borran solo con `docker compose down -v`).
+Compose levanta dos contenedores: **PostgreSQL 16** (`db`) y la aplicación (`caja-piura`), que espera a que
+la base esté lista. Abrir <http://localhost:8080>. Los datos viven en los volúmenes `caja-piura-pgdata`
+(base de datos) y `caja-piura-data` (documentos), así que sobreviven a `docker compose down`
+(se borran solo con `docker compose down -v`). La base no se expone fuera de Docker.
 
 **Solo con Docker:**
 
@@ -155,6 +157,7 @@ sobreviven a `docker compose down` (se borran solo con `docker compose down -v`)
 docker build -t caja-piura-preevaluacion .
 docker run -p 8080:8080 -v caja-piura-data:/app/data caja-piura-preevaluacion
 ```
+Esta variante usa H2 (base embebida). Para PostgreSQL usa Docker Compose o define `SPRING_PROFILES_ACTIVE=postgres`, `DB_URL`, `DB_USER` y `DB_PASSWORD`.
 
 ## Dos portales
 

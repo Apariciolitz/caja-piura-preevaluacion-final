@@ -49,3 +49,10 @@ Rutas `/admin/**` (solo ROLE_ADMIN). Al iniciar sesion, el admin entra a `/admin
 - **Docker Compose**: `docker-compose.yml`, `.env.example` y `.dockerignore`; volumen `caja-piura-data` para la base y los documentos.
 - Pruebas nuevas: `ClientePortalTest` (7 pruebas).
 - Limitaciones conocidas: no hay verificación del correo por enlace (requiere un servicio de envío de correo); no hay "olvidé mi contraseña"; no hay eliminación de cuenta desde el portal (derecho de cancelación se atiende por solicitud); con H2 efímero en Render, **las cuentas de clientes se pierden en cada redespliegue** (la solución es Postgres, INC-03); el bloqueo por intentos se reinicia al reiniciar la app.
+
+## Base de datos PostgreSQL (24/11/2026)
+- **PostgreSQL 16** como base de datos real. Se añade el driver al `pom.xml` y el perfil `postgres` (`application-postgres.properties`), que se activa con `SPRING_PROFILES_ACTIVE=postgres`. Sin ese perfil la app sigue usando H2, por lo que las pruebas automáticas y el CI no cambian.
+- **Docker Compose con dos servicios**: `db` (PostgreSQL con *healthcheck* y volumen `caja-piura-pgdata`, sin puerto publicado) y `caja-piura` (espera a que la base esté sana). La contraseña de la base se define en `.env` (`DB_PASSWORD`, obligatoria).
+- Motivo: H2 en Render pierde los datos (incluidas las cuentas de clientes) en cada despliegue; PostgreSQL resuelve el incidente INC-03.
+- Esquema: Hibernate `ddl-auto=update`. Pendiente para producción real: migraciones versionadas (Flyway) y copias de seguridad.
+- Para la nube: crear una base PostgreSQL y definir en el servicio web `SPRING_PROFILES_ACTIVE=postgres`, `DB_URL` (formato `jdbc:postgresql://host:5432/base`), `DB_USER` y `DB_PASSWORD`.
